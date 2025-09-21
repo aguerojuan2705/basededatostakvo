@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base de Datos Grupo Takvo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Base de Datos Grupo Takvo</h1>
+      <p>Sistema de gestión de negocios por ubicación y rubro</p>
+    </header>
+
+
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-value" id="total-paises">1</div>
+        <div class="stat-label">Países</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="total-provincias">24</div>
+        <div class="stat-label">Provincias</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="total-ciudades">135</div>
+        <div class="stat-label">Ciudades</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-value" id="total-negocios">10</div>
+        <div class="stat-label">Negocios</div>
+      </div>
+    </div>
+
+
+    <div class="filters">
+      <div class="filter-group">
+        <label for="pais">País</label>
+        <select id="pais">
+          <option value="">Seleccionar país</option>
+        </select>
+      </div>
+
+
+      <div class="filter-group">
+        <label for="provincia">Provincia</label>
+        <select id="provincia">
+          <option value="">Seleccionar provincia</option>
+        </select>
+      </div>
+
+
+      <div class="filter-group">
+        <label for="ciudad">Ciudad</label>
+        <select id="ciudad">
+          <option value="">Seleccionar ciudad</option>
+        </select>
+      </div>
+
+
+      <div class="filter-group">
+        <label for="rubro">Área de Negocio</label>
+        <select id="rubro">
+          <option value="">Seleccionar área</option>
+          <option value="concesionaria">Concesionaria</option>
+          <option value="restaurante">Restaurante</option>
+          <option value="farmacia">Farmacia</option>
+          <option value="hotel">Hotel</option>
+          <option value="tienda">Tienda</option>
+          <option value="centro">Centro Medico</option>
+        </select>
+      </div>
+
+
+      <div class="filter-group">
+        <label for="busqueda">Buscar negocio</label>
+        <input type="text" id="busqueda" placeholder="Nombre del negocio">
+      </div>
+
+
+      <div class="filter-group" style="justify-content: flex-end;">
+        <button class="btn btn-add" id="btn-add-business">
+          <i class="fas fa-plus"></i> Agregar Negocio
+        </button>
+      </div>
+    </div>
+
+
+    <div class="table-container">
+      <table id="tabla-negocios">
+        <thead class="table-header">
+          <tr>
+            <th class="sortable" data-sort="nombre">Nombre <i class="fas fa-sort"></i></th>
+            <th class="sortable" data-sort="telefono">Teléfono <i class="fas fa-sort"></i></th>
+            <th class="sortable" data-sort="rubro">Rubro <i class="fas fa-sort"></i></th>
+            <th class="sortable" data-sort="ciudad">Ciudad <i class="fas fa-sort"></i></th>
+            <th class="sortable" data-sort="provincia">Provincia <i class="fas fa-sort"></i></th>
+            <th>Mensaje Enviado</th> <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          </tbody>
+      </table>
+    </div>
+
+
+    <footer>
+      <p>Base de Datos Grupo Takvo &copy; 2025 - Sistema de Gestión de Negocios</p>
+    </footer>
+  </div>
+
+
+  <div class="modal" id="business-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">Agregar Nuevo Negocio</h2>
+        <span class="close">&times;</span>
+      </div>
+
+
+      <form id="business-form">
+        <input type="hidden" id="business-id">
+
+
+        <div class="form-group">
+          <label for="modal-pais">País</label>
+          <select id="modal-pais" required>
+            <option value="">Seleccionar país</option>
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label for="modal-provincia">Provincia</label>
+          <select id="modal-provincia" required>
+            <option value="">Seleccionar provincia</option>
+            <option value="buenos_aires">Buenos Aires</option>
+            <option value="caba">Ciudad Autónoma de Buenos Aires</option>
+            <option value="cordoba">Córdoba</option>
+            <option value="santa_fe">Santa Fe</option>
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label for="modal-ciudad">Ciudad</label>
+          <select id="modal-ciudad" required>
+            <option value="">Seleccionar ciudad</option>
+            <option value="la_plata">La Plata</option>
+            <option value="mar_del_plata">Mar del Plata</option>
+            <option value="caba">Ciudad de Buenos Aires</option>
+            <option value="rosario">Rosario</option>
+            <option value="cordoba">Córdoba Capital</option>
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label for="modal-rubro">Área de Negocio</label>
+          <select id="modal-rubro" required>
+            <option value="">Seleccionar área</option>
+            <option value="concesionaria">Concesionaria</option>
+            <option value="restaurante">Restaurante</option>
+            <option value="farmacia">Farmacia</option>
+            <option value="hotel">Hotel</option>
+            <option value="tienda">Tienda</option>
+            <option value="centro">Centro Medico</option>
+          </select>
+        </div>
+
+
+        <div class="form-group">
+          <label for="modal-nombre">Nombre del Negocio</label>
+          <input type="text" id="modal-nombre" required>
+        </div>
+
+
+        <div class="form-group">
+          <label for="modal-telefono">Teléfono de Contacto</label>
+          <input type="text" id="modal-telefono" required>
+        </div>
+
+
+        <button type="submit" class="btn">Guardar Negocio</button>
+      </form>
+    </div>
+  </div>
+
+
+  <script src="scripts.js"></script>
+</body>
+</html>

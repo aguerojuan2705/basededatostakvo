@@ -1,0 +1,1402 @@
+{
+  "paises": [
+    {
+      "id": "argentina",
+      "nombre": "Argentina",
+      "poblacion": 46044703,
+      "provincias": [
+        {
+          "id": "caba",
+          "nombre": "Ciudad Autónoma de Buenos Aires",
+          "poblacion": 3121707,
+          "ciudades": [
+            {
+              "id": "caba",
+              "nombre": "Ciudad Autónoma de Buenos Aires",
+              "poblacion": 3121707
+            }
+          ]
+        },
+        {
+          "id": "buenos_aires",
+          "nombre": "Buenos Aires",
+          "poblacion": 17523996,
+          "ciudades": [
+            {
+              "id": "la_plata",
+              "nombre": "La Plata",
+              "poblacion": 772618
+            },
+            {
+              "id": "mar_del_plata",
+              "nombre": "Mar del Plata",
+              "poblacion": 682605
+            },
+            {
+              "id": "bahia_blanca",
+              "nombre": "Bahía Blanca",
+              "poblacion": 299101
+            },
+            {
+              "id": "merlo",
+              "nombre": "Merlo",
+              "poblacion": 268961
+            },
+            {
+              "id": "quilmes",
+              "nombre": "Quilmes",
+              "poblacion": 262379
+            },
+            {
+              "id": "san_isidro",
+              "nombre": "San Isidro",
+              "poblacion": 292875
+            }
+          ]
+        },
+        {
+          "id": "catamarca",
+          "nombre": "Catamarca",
+          "poblacion": 429562,
+          "ciudades": [
+            {
+              "id": "san_fernando_del_valle_de_catamarca",
+              "nombre": "San Fernando del Valle de Catamarca",
+              "poblacion": 159703
+            }
+          ]
+        },
+        {
+          "id": "chaco",
+          "nombre": "Chaco",
+          "poblacion": 1129606,
+          "ciudades": [
+            {
+              "id": "resistencia",
+              "nombre": "Resistencia",
+              "poblacion": 290723
+            }
+          ]
+        },
+        {
+          "id": "chubut",
+          "nombre": "Chubut",
+          "poblacion": 592621,
+          "ciudades": [
+            {
+              "id": "comodoro_rivadavia",
+              "nombre": "Comodoro Rivadavia",
+              "poblacion": 175865
+            },
+            {
+              "id": "trelew",
+              "nombre": "Trelew",
+              "poblacion": 97915
+            },
+            {
+              "id": "rawson",
+              "nombre": "Rawson",
+              "poblacion": 31780
+            }
+          ]
+        },
+        {
+          "id": "cordoba",
+          "nombre": "Córdoba",
+          "poblacion": 3840905,
+          "ciudades": [
+            {
+              "id": "cordoba_capital",
+              "nombre": "Córdoba Capital",
+              "poblacion": 1565112
+            },
+            {
+              "id": "rio_cuarto",
+              "nombre": "Río Cuarto",
+              "poblacion": 157010
+            },
+            {
+              "id": "villa_maria",
+              "nombre": "Villa María",
+              "poblacion": 79478
+            }
+          ]
+        },
+        {
+          "id": "corrientes",
+          "nombre": "Corrientes",
+          "poblacion": 1212696,
+          "ciudades": [
+            {
+              "id": "corrientes_capital",
+              "nombre": "Corrientes",
+              "poblacion": 346334
+            }
+          ]
+        },
+        {
+          "id": "entre_rios",
+          "nombre": "Entre Ríos",
+          "poblacion": 1425578,
+          "ciudades": [
+            {
+              "id": "parana",
+              "nombre": "Paraná",
+              "poblacion": 247863
+            },
+            {
+              "id": "concordia",
+              "nombre": "Concordia",
+              "poblacion": 152282
+            }
+          ]
+        },
+        {
+          "id": "formosa",
+          "nombre": "Formosa",
+          "poblacion": 607419,
+          "ciudades": [
+            {
+              "id": "formosa_capital",
+              "nombre": "Formosa",
+              "poblacion": 222226
+            }
+          ]
+        },
+        {
+          "id": "jujuy",
+          "nombre": "Jujuy",
+          "poblacion": 811611,
+          "ciudades": [
+            {
+              "id": "san_salvador_de_jujuy",
+              "nombre": "San Salvador de Jujuy",
+              "poblacion": 257970
+            }
+          ]
+        },
+        {
+          "id": "la_pampa",
+          "nombre": "La Pampa",
+          "poblacion": 361859,
+          "ciudades": [
+            {
+              "id": "santa_rosa",
+              "nombre": "Santa Rosa",
+              "poblacion": 103825
+            },
+            {
+              "id": "general_pico",
+              "nombre": "General Pico",
+              "poblacion": 63897
+            }
+          ]
+        },
+        {
+          "id": "la_rioja",
+          "nombre": "La Rioja",
+          "poblacion": 383865,
+          "ciudades": [
+            {
+              "id": "la_rioja_capital",
+              "nombre": "La Rioja",
+              "poblacion": 178872
+            }
+          ]
+        },
+        {
+          "id": "mendoza",
+          "nombre": "Mendoza",
+          "poblacion": 2043540,
+          "ciudades": [
+            {
+              "id": "mendoza_capital",
+              "nombre": "Mendoza",
+              "poblacion": 114822
+            },
+            {
+              "id": "guaymallen",
+              "nombre": "Guaymallén",
+              "poblacion": 283861
+            }
+          ]
+        },
+        {
+          "id": "misiones",
+          "nombre": "Misiones",
+          "poblacion": 1278873,
+          "ciudades": [
+            {
+              "id": "posadas",
+              "nombre": "Posadas",
+              "poblacion": 275028
+            },
+            {
+              "id": "obera",
+              "nombre": "Oberá",
+              "poblacion": 66687
+            }
+          ]
+        },
+        {
+          "id": "neuquen",
+          "nombre": "Neuquén",
+          "poblacion": 710814,
+          "ciudades": [
+            {
+              "id": "neuquen_capital",
+              "nombre": "Neuquén",
+              "poblacion": 231191
+            },
+            {
+              "id": "san_martin_de_los_andes",
+              "nombre": "San Martín de los Andes",
+              "poblacion": 32334
+            }
+          ]
+        },
+        {
+          "id": "rio_negro",
+          "nombre": "Río Negro",
+          "poblacion": 750768,
+          "ciudades": [
+            {
+              "id": "san_carlos_de_bariloche",
+              "nombre": "San Carlos de Bariloche",
+              "poblacion": 112887
+            },
+            {
+              "id": "general_roca",
+              "nombre": "General Roca",
+              "poblacion": 91456
+            }
+          ]
+        },
+        {
+          "id": "salta",
+          "nombre": "Salta",
+          "poblacion": 1441351,
+          "ciudades": [
+            {
+              "id": "salta_capital",
+              "nombre": "Salta",
+              "poblacion": 520683
+            },
+            {
+              "id": "san_ramon_de_la_nueva_oran",
+              "nombre": "San Ramón de la Nueva Orán",
+              "poblacion": 82512
+            }
+          ]
+        },
+        {
+          "id": "san_juan",
+          "nombre": "San Juan",
+          "poblacion": 822853,
+          "ciudades": [
+            {
+              "id": "san_juan_capital",
+              "nombre": "San Juan",
+              "poblacion": 109123
+            }
+          ]
+        },
+        {
+          "id": "san_luis",
+          "nombre": "San Luis",
+          "poblacion": 542069,
+          "ciudades": [
+            {
+              "id": "san_luis_capital",
+              "nombre": "San Luis",
+              "poblacion": 169947
+            },
+            {
+              "id": "villa_mercedes",
+              "nombre": "Villa Mercedes",
+              "poblacion": 111967
+            }
+          ]
+        },
+        {
+          "id": "santa_fe",
+          "nombre": "Santa Fe",
+          "poblacion": 3544908,
+          "ciudades": [
+            {
+              "id": "rosario",
+              "nombre": "Rosario",
+              "poblacion": 948312
+            },
+            {
+              "id": "santa_fe_capital",
+              "nombre": "Santa Fe",
+              "poblacion": 391164
+            },
+            {
+              "id": "rafaela",
+              "nombre": "Rafaela",
+              "poblacion": 94304
+            }
+          ]
+        },
+        {
+          "id": "santiago_del_estero",
+          "nombre": "Santiago del Estero",
+          "poblacion": 1060906,
+          "ciudades": [
+            {
+              "id": "santiago_del_estero_capital",
+              "nombre": "Santiago del Estero",
+              "poblacion": 252192
+            }
+          ]
+        },
+        {
+          "id": "tierra_del_fuego",
+          "nombre": "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+          "poblacion": 185732,
+          "ciudades": [
+            {
+              "id": "ushuaia",
+              "nombre": "Ushuaia",
+              "poblacion": 70200
+            },
+            {
+              "id": "rio_grande",
+              "nombre": "Río Grande",
+              "poblacion": 98017
+            }
+          ]
+        },
+        {
+          "id": "tucuman",
+          "nombre": "Tucumán",
+          "poblacion": 1731820,
+          "ciudades": [
+            {
+              "id": "san_miguel_de_tucuman",
+              "nombre": "San Miguel de Tucumán",
+              "poblacion": 548866
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "uruguay",
+      "nombre": "Uruguay",
+      "poblacion": 3426260,
+      "provincias": [
+        {
+          "id": "montevideo",
+          "nombre": "Montevideo",
+          "poblacion": 1319108,
+          "ciudades": [
+            {
+              "id": "montevideo_capital",
+              "nombre": "Montevideo",
+              "poblacion": 1319108
+            }
+          ]
+        },
+        {
+          "id": "canelones",
+          "nombre": "Canelones",
+          "poblacion": 520187,
+          "ciudades": [
+            {
+              "id": "las_piedras",
+              "nombre": "Las Piedras",
+              "poblacion": 71258
+            },
+            {
+              "id": "progreso",
+              "nombre": "Progreso",
+              "poblacion": 17290
+            }
+          ]
+        },
+        {
+          "id": "maldonado",
+          "nombre": "Maldonado",
+          "poblacion": 192561,
+          "ciudades": [
+            {
+              "id": "maldonado_capital",
+              "nombre": "Maldonado",
+              "poblacion": 86455
+            },
+            {
+              "id": "punta_del_este",
+              "nombre": "Punta del Este",
+              "poblacion": 9797
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mexico",
+      "nombre": "México",
+      "poblacion": 128932753,
+      "provincias": [
+        {
+          "id": "cdmx",
+          "nombre": "Ciudad de México",
+          "poblacion": 9209944,
+          "ciudades": [
+            {
+              "id": "coyoacan",
+              "nombre": "Coyoacán",
+              "poblacion": 620416
+            },
+            {
+              "id": "iztapalapa",
+              "nombre": "Iztapalapa",
+              "poblacion": 1815786
+            }
+          ]
+        },
+        {
+          "id": "jalisco",
+          "nombre": "Jalisco",
+          "poblacion": 8348123,
+          "ciudades": [
+            {
+              "id": "guadalajara",
+              "nombre": "Guadalajara",
+              "poblacion": 1495182
+            },
+            {
+              "id": "puerto_vallarta",
+              "nombre": "Puerto Vallarta",
+              "poblacion": 291839
+            }
+          ]
+        },
+        {
+          "id": "nuevo_leon",
+          "nombre": "Nuevo León",
+          "poblacion": 5784442,
+          "ciudades": [
+            {
+              "id": "monterrey",
+              "nombre": "Monterrey",
+              "poblacion": 1135512
+            },
+            {
+              "id": "san_nicolas",
+              "nombre": "San Nicolás de los Garza",
+              "poblacion": 443273
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "colombia",
+      "nombre": "Colombia",
+      "poblacion": 51520527,
+      "provincias": [
+        {
+          "id": "cundinamarca",
+          "nombre": "Cundinamarca",
+          "poblacion": 3240000,
+          "ciudades": [
+            {
+              "id": "bogota",
+              "nombre": "Bogotá",
+              "poblacion": 7743955
+            },
+            {
+              "id": "soacha",
+              "nombre": "Soacha",
+              "poblacion": 650000
+            }
+          ]
+        },
+        {
+          "id": "antioquia",
+          "nombre": "Antioquia",
+          "poblacion": 6421500,
+          "ciudades": [
+            {
+              "id": "medellin",
+              "nombre": "Medellín",
+              "poblacion": 2550000
+            },
+            {
+              "id": "bello",
+              "nombre": "Bello",
+              "poblacion": 530000
+            }
+          ]
+        },
+        {
+          "id": "valle_cauca",
+          "nombre": "Valle del Cauca",
+          "poblacion": 4640000,
+          "ciudades": [
+            {
+              "id": "cali",
+              "nombre": "Cali",
+              "poblacion": 2228000
+            },
+            {
+              "id": "palmira",
+              "nombre": "Palmira",
+              "poblacion": 310000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chile",
+      "nombre": "Chile",
+      "poblacion": 19107216,
+      "provincias": [
+        {
+          "id": "region_metropolitana",
+          "nombre": "Región Metropolitana",
+          "poblacion": 8150000,
+          "ciudades": [
+            {
+              "id": "santiago",
+              "nombre": "Santiago",
+              "poblacion": 6158080
+            },
+            {
+              "id": "puente_alto",
+              "nombre": "Puente Alto",
+              "poblacion": 700000
+            }
+          ]
+        },
+        {
+          "id": "valparaiso",
+          "nombre": "Valparaíso",
+          "poblacion": 1960000,
+          "ciudades": [
+            {
+              "id": "valparaiso_ciudad",
+              "nombre": "Valparaíso",
+              "poblacion": 300000
+            },
+            {
+              "id": "vina_del_mar",
+              "nombre": "Viña del Mar",
+              "poblacion": 330000
+            }
+          ]
+        },
+        {
+          "id": "biobio",
+          "nombre": "Biobío",
+          "poblacion": 1650000,
+          "ciudades": [
+            {
+              "id": "concepcion",
+              "nombre": "Concepción",
+              "poblacion": 223000
+            },
+            {
+              "id": "los_angeles",
+              "nombre": "Los Ángeles",
+              "poblacion": 200000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "peru",
+      "nombre": "Perú",
+      "poblacion": 33715471,
+      "provincias": [
+        {
+          "id": "lima",
+          "nombre": "Lima",
+          "poblacion": 9674755,
+          "ciudades": [
+            {
+              "id": "lima_capital",
+              "nombre": "Lima",
+              "poblacion": 9674755
+            },
+            {
+              "id": "callao",
+              "nombre": "Callao",
+              "poblacion": 1100000
+            }
+          ]
+        },
+        {
+          "id": "arequipa",
+          "nombre": "Arequipa",
+          "poblacion": 1420000,
+          "ciudades": [
+            {
+              "id": "arequipa_capital",
+              "nombre": "Arequipa",
+              "poblacion": 1080000
+            },
+            {
+              "id": "camana",
+              "nombre": "Camaná",
+              "poblacion": 60000
+            }
+          ]
+        },
+        {
+          "id": "cusco",
+          "nombre": "Cusco",
+          "poblacion": 1350000,
+          "ciudades": [
+            {
+              "id": "cusco_capital",
+              "nombre": "Cusco",
+              "poblacion": 428450
+            },
+            {
+              "id": "sicuani",
+              "nombre": "Sicuani",
+              "poblacion": 65000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ecuador",
+      "nombre": "Ecuador",
+      "poblacion": 18001000,
+      "provincias": [
+        {
+          "id": "pichincha",
+          "nombre": "Pichincha",
+          "poblacion": 3200000,
+          "ciudades": [
+            {
+              "id": "quito",
+              "nombre": "Quito",
+              "poblacion": 2011388
+            },
+            {
+              "id": "cayambe",
+              "nombre": "Cayambe",
+              "poblacion": 120000
+            }
+          ]
+        },
+        {
+          "id": "guayas",
+          "nombre": "Guayas",
+          "poblacion": 4500000,
+          "ciudades": [
+            {
+              "id": "guayaquil",
+              "nombre": "Guayaquil",
+              "poblacion": 2732000
+            },
+            {
+              "id": "daule",
+              "nombre": "Daule",
+              "poblacion": 173000
+            }
+          ]
+        },
+        {
+          "id": "azuay",
+          "nombre": "Azuay",
+          "poblacion": 900000,
+          "ciudades": [
+            {
+              "id": "cuenca",
+              "nombre": "Cuenca",
+              "poblacion": 636996
+            },
+            {
+              "id": "gualaceo",
+              "nombre": "Gualaceo",
+              "poblacion": 42000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bolivia",
+      "nombre": "Bolivia",
+      "poblacion": 12224110,
+      "provincias": [
+        {
+          "id": "la_paz",
+          "nombre": "La Paz",
+          "poblacion": 3000000,
+          "ciudades": [
+            {
+              "id": "la_paz_ciudad",
+              "nombre": "La Paz",
+              "poblacion": 816044
+            },
+            {
+              "id": "el_alto",
+              "nombre": "El Alto",
+              "poblacion": 974754
+            }
+          ]
+        },
+        {
+          "id": "santa_cruz",
+          "nombre": "Santa Cruz",
+          "poblacion": 3600000,
+          "ciudades": [
+            {
+              "id": "santa_cruz_capital",
+              "nombre": "Santa Cruz de la Sierra",
+              "poblacion": 1816000
+            },
+            {
+              "id": "montero",
+              "nombre": "Montero",
+              "poblacion": 109503
+            }
+          ]
+        },
+        {
+          "id": "cochabamba",
+          "nombre": "Cochabamba",
+          "poblacion": 2000000,
+          "ciudades": [
+            {
+              "id": "cochabamba_capital",
+              "nombre": "Cochabamba",
+              "poblacion": 630587
+            },
+            {
+              "id": "quillacollo",
+              "nombre": "Quillacollo",
+              "poblacion": 137182
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paraguay",
+      "nombre": "Paraguay",
+      "poblacion": 7353038,
+      "provincias": [
+        {
+          "id": "central",
+          "nombre": "Central",
+          "poblacion": 2500000,
+          "ciudades": [
+            {
+              "id": "luque",
+              "nombre": "Luque",
+              "poblacion": 265249
+            },
+            {
+              "id": "san_lorenzo",
+              "nombre": "San Lorenzo",
+              "poblacion": 287228
+            }
+          ]
+        },
+        {
+          "id": "alto_parana",
+          "nombre": "Alto Paraná",
+          "poblacion": 800000,
+          "ciudades": [
+            {
+              "id": "ciudad_del_este",
+              "nombre": "Ciudad del Este",
+              "poblacion": 301815
+            },
+            {
+              "id": "hernandarias",
+              "nombre": "Hernandarias",
+              "poblacion": 79000
+            }
+          ]
+        },
+        {
+          "id": "asuncion",
+          "nombre": "Asunción",
+          "poblacion": 525294,
+          "ciudades": [
+            {
+              "id": "asuncion_capital",
+              "nombre": "Asunción",
+              "poblacion": 525294
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "venezuela",
+      "nombre": "Venezuela",
+      "poblacion": 28435943,
+      "provincias": [
+        {
+          "id": "distrito_capital",
+          "nombre": "Distrito Capital",
+          "poblacion": 2200000,
+          "ciudades": [
+            {
+              "id": "caracas",
+              "nombre": "Caracas",
+              "poblacion": 1943901
+            }
+          ]
+        },
+        {
+          "id": "zulia",
+          "nombre": "Zulia",
+          "poblacion": 3700000,
+          "ciudades": [
+            {
+              "id": "maracaibo",
+              "nombre": "Maracaibo",
+              "poblacion": 1495721
+            },
+            {
+              "id": "cabimas",
+              "nombre": "Cabimas",
+              "poblacion": 263922
+            }
+          ]
+        },
+        {
+          "id": "lara",
+          "nombre": "Lara",
+          "poblacion": 2000000,
+          "ciudades": [
+            {
+              "id": "barquisimeto",
+              "nombre": "Barquisimeto",
+              "poblacion": 1000000
+            },
+            {
+              "id": "cabudare",
+              "nombre": "Cabudare",
+              "poblacion": 200000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "guatemala",
+      "nombre": "Guatemala",
+      "poblacion": 17915568,
+      "provincias": [
+        {
+          "id": "guatemala_depto",
+          "nombre": "Guatemala",
+          "poblacion": 3000000,
+          "ciudades": [
+            {
+              "id": "guatemala_ciudad",
+              "nombre": "Ciudad de Guatemala",
+              "poblacion": 3016000
+            },
+            {
+              "id": "mixco",
+              "nombre": "Mixco",
+              "poblacion": 501000
+            }
+          ]
+        },
+        {
+          "id": "quetzaltenango",
+          "nombre": "Quetzaltenango",
+          "poblacion": 800000,
+          "ciudades": [
+            {
+              "id": "quetzaltenango_ciudad",
+              "nombre": "Quetzaltenango",
+              "poblacion": 180706
+            },
+            {
+              "id": "coatepeque",
+              "nombre": "Coatepeque",
+              "poblacion": 100000
+            }
+          ]
+        },
+        {
+          "id": "escuintla",
+          "nombre": "Escuintla",
+          "poblacion": 700000,
+          "ciudades": [
+            {
+              "id": "escuintla_ciudad",
+              "nombre": "Escuintla",
+              "poblacion": 160000
+            },
+            {
+              "id": "puerto_san_jose",
+              "nombre": "Puerto San José",
+              "poblacion": 20000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cuba",
+      "nombre": "Cuba",
+      "poblacion": 11193470,
+      "provincias": [
+        {
+          "id": "la_habana",
+          "nombre": "La Habana",
+          "poblacion": 2100000,
+          "ciudades": [
+            {
+              "id": "habana_capital",
+              "nombre": "La Habana",
+              "poblacion": 2100000
+            }
+          ]
+        },
+        {
+          "id": "santiago_cuba",
+          "nombre": "Santiago de Cuba",
+          "poblacion": 1000000,
+          "ciudades": [
+            {
+              "id": "santiago",
+              "nombre": "Santiago de Cuba",
+              "poblacion": 555865
+            },
+            {
+              "id": "palma_soriano",
+              "nombre": "Palma Soriano",
+              "poblacion": 125385
+            }
+          ]
+        },
+        {
+          "id": "holguin",
+          "nombre": "Holguín",
+          "poblacion": 1000000,
+          "ciudades": [
+            {
+              "id": "holguin_capital",
+              "nombre": "Holguín",
+              "poblacion": 346195
+            },
+            {
+              "id": "moa",
+              "nombre": "Moa",
+              "poblacion": 74120
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "republica_dominicana",
+      "nombre": "República Dominicana",
+      "poblacion": 10913472,
+      "provincias": [
+        {
+          "id": "distrito_nacional",
+          "nombre": "Distrito Nacional",
+          "poblacion": 1100000,
+          "ciudades": [
+            {
+              "id": "santo_domingo",
+              "nombre": "Santo Domingo",
+              "poblacion": 965040
+            }
+          ]
+        },
+        {
+          "id": "santiago",
+          "nombre": "Santiago",
+          "poblacion": 1000000,
+          "ciudades": [
+            {
+              "id": "santiago_ciudad",
+              "nombre": "Santiago de los Caballeros",
+              "poblacion": 591985
+            },
+            {
+              "id": "tamboril",
+              "nombre": "Tamboril",
+              "poblacion": 70000
+            }
+          ]
+        },
+        {
+          "id": "la_vega",
+          "nombre": "La Vega",
+          "poblacion": 500000,
+          "ciudades": [
+            {
+              "id": "la_vega_ciudad",
+              "nombre": "La Vega",
+              "poblacion": 202864
+            },
+            {
+              "id": "constanza",
+              "nombre": "Constanza",
+              "poblacion": 80000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "honduras",
+      "nombre": "Honduras",
+      "poblacion": 10593798,
+      "provincias": [
+        {
+          "id": "francisco_morazan",
+          "nombre": "Francisco Morazán",
+          "poblacion": 1700000,
+          "ciudades": [
+            {
+              "id": "tegucigalpa",
+              "nombre": "Tegucigalpa",
+              "poblacion": 1221123
+            },
+            {
+              "id": "comayaguela",
+              "nombre": "Comayagüela",
+              "poblacion": 500000
+            }
+          ]
+        },
+        {
+          "id": "cortes",
+          "nombre": "Cortés",
+          "poblacion": 1500000,
+          "ciudades": [
+            {
+              "id": "san_pedro_sula",
+              "nombre": "San Pedro Sula",
+              "poblacion": 719447
+            },
+            {
+              "id": "choloma",
+              "nombre": "Choloma",
+              "poblacion": 223000
+            }
+          ]
+        },
+        {
+          "id": "atlantida",
+          "nombre": "Atlántida",
+          "poblacion": 500000,
+          "ciudades": [
+            {
+              "id": "la_ceiba",
+              "nombre": "La Ceiba",
+              "poblacion": 250000
+            },
+            {
+              "id": "tela",
+              "nombre": "Tela",
+              "poblacion": 100000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "el_salvador",
+      "nombre": "El Salvador",
+      "poblacion": 6486201,
+      "provincias": [
+        {
+          "id": "san_salvador",
+          "nombre": "San Salvador",
+          "poblacion": 1700000,
+          "ciudades": [
+            {
+              "id": "san_salvador_ciudad",
+              "nombre": "San Salvador",
+              "poblacion": 1100000
+            },
+            {
+              "id": "soyapango",
+              "nombre": "Soyapango",
+              "poblacion": 290000
+            }
+          ]
+        },
+        {
+          "id": "santa_ana",
+          "nombre": "Santa Ana",
+          "poblacion": 500000,
+          "ciudades": [
+            {
+              "id": "santa_ana_ciudad",
+              "nombre": "Santa Ana",
+              "poblacion": 245421
+            },
+            {
+              "id": "metapan",
+              "nombre": "Metapán",
+              "poblacion": 60000
+            }
+          ]
+        },
+        {
+          "id": "la_libertad",
+          "nombre": "La Libertad",
+          "poblacion": 700000,
+          "ciudades": [
+            {
+              "id": "santa_tecla",
+              "nombre": "Santa Tecla",
+              "poblacion": 150000
+            },
+            {
+              "id": "nueva_san_salvador",
+              "nombre": "Nueva San Salvador",
+              "poblacion": 125000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nicaragua",
+      "nombre": "Nicaragua",
+      "poblacion": 7046314,
+      "provincias": [
+        {
+          "id": "managua",
+          "nombre": "Managua",
+          "poblacion": 1500000,
+          "ciudades": [
+            {
+              "id": "managua_ciudad",
+              "nombre": "Managua",
+              "poblacion": 1040000
+            },
+            {
+              "id": "tipitapa",
+              "nombre": "Tipitapa",
+              "poblacion": 150000
+            }
+          ]
+        },
+        {
+          "id": "leon",
+          "nombre": "León",
+          "poblacion": 500000,
+          "ciudades": [
+            {
+              "id": "leon_ciudad",
+              "nombre": "León",
+              "poblacion": 210041
+            },
+            {
+              "id": "nagarote",
+              "nombre": "Nagarote",
+              "poblacion": 40000
+            }
+          ]
+        },
+        {
+          "id": "granada",
+          "nombre": "Granada",
+          "poblacion": 300000,
+          "ciudades": [
+            {
+              "id": "granada_ciudad",
+              "nombre": "Granada",
+              "poblacion": 130000
+            },
+            {
+              "id": "nandaime",
+              "nombre": "Nandaime",
+              "poblacion": 50000
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "costa_rica",
+      "nombre": "Costa Rica",
+      "poblacion": 5180829,
+      "provincias": [
+        {
+          "id": "san_jose",
+          "nombre": "San José",
+          "poblacion": 1500000,
+          "ciudades": [
+            {
+              "id": "san_jose_ciudad",
+              "nombre": "San José",
+              "poblacion": 342188
+            },
+            {
+              "id": "desamparados",
+              "nombre": "Desamparados",
+              "poblacion": 206708
+            }
+          ]
+        },
+        {
+          "id": "alajuela",
+          "nombre": "Alajuela",
+          "poblacion": 1000000,
+          "ciudades": [
+            {
+              "id": "alajuela_ciudad",
+              "nombre": "Alajuela",
+              "poblacion": 297879
+            },
+            {
+              "id": "san_carlos",
+              "nombre": "San Carlos",
+              "poblacion": 200000
+            }
+          ]
+        },
+        {
+          "id": "cartago",
+          "nombre": "Cartago",
+          "poblacion": 500000,
+          "ciudades": [
+            {
+              "id": "cartago_ciudad",
+              "nombre": "Cartago",
+              "poblacion": 156600
+            },
+            {
+              "id": "turrialba",
+              "nombre": "Turrialba",
+              "poblacion": 35000
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "negocios": [
+    {
+      "id": 1,
+      "nombre": "AutoCity",
+      "telefono": "+54 11 1234-5678",
+      "rubro": "concesionaria",
+      "pais": "argentina",
+      "provincia": "caba",
+      "ciudad": "caba",
+      "enviado": false
+    },
+    {
+      "id": 2,
+      "nombre": "Río Auto",
+      "telefono": "+54 11 2345-6789",
+      "rubro": "concesionaria",
+      "pais": "argentina",
+      "provincia": "caba",
+      "ciudad": "caba",
+      "enviado": false
+    },
+    {
+      "id": 3,
+      "nombre": "La Esquina",
+      "telefono": "+54 221 456-7890",
+      "rubro": "restaurante",
+      "pais": "argentina",
+      "provincia": "buenos_aires",
+      "ciudad": "la_plata",
+      "enviado": false
+    },
+    {
+      "id": 4,
+      "nombre": "Farmacia Central",
+      "telefono": "+54 223 567-8901",
+      "rubro": "farmacia",
+      "pais": "argentina",
+      "provincia": "buenos_aires",
+      "ciudad": "mar_del_plata",
+      "enviado": false
+    },
+    {
+      "id": 5,
+      "nombre": "Hotel Costa",
+      "telefono": "+54 291 678-9012",
+      "rubro": "hotel",
+      "pais": "argentina",
+      "provincia": "buenos_aires",
+      "ciudad": "bahia_blanca",
+      "enviado": false
+    },
+    {
+      "id": 6,
+      "nombre": "AutoCórdoba",
+      "telefono": "+54 351 789-0123",
+      "rubro": "concesionaria",
+      "pais": "argentina",
+      "provincia": "cordoba",
+      "ciudad": "cordoba_capital",
+      "enviado": false
+    },
+    {
+      "id": 7,
+      "nombre": "Ruta 9 Concesionaria",
+      "telefono": "+54 343 456-7890",
+      "rubro": "concesionaria",
+      "pais": "argentina",
+      "provincia": "santa_fe",
+      "ciudad": "rosario",
+      "enviado": false
+    },
+    {
+      "id": 8,
+      "nombre": "El Asador",
+      "telefono": "+54 341 567-8901",
+      "rubro": "restaurante",
+      "pais": "argentina",
+      "provincia": "santa_fe",
+      "ciudad": "rosario",
+      "enviado": false
+    },
+    {
+      "id": 9,
+      "nombre": "Farmacia del Pueblo",
+      "telefono": "+54 342 678-9012",
+      "rubro": "farmacia",
+      "pais": "argentina",
+      "provincia": "santa_fe",
+      "ciudad": "santa_fe",
+      "enviado": false
+    },
+    {
+      "id": 10,
+      "nombre": "Hotel Plaza",
+      "telefono": "+54 342 789-0123",
+      "rubro": "hotel",
+      "pais": "argentina",
+      "provincia": "santa_fe",
+      "ciudad": "rafaela",
+      "enviado": false
+    },
+    {
+      "id": 11,
+      "pais": "argentina",
+      "provincia": "caba",
+      "ciudad": "caba",
+      "rubro": "centro",
+      "nombre": "Centro Medico Belgrano",
+      "telefono": "3644302541",
+      "enviado": false
+    }
+  ]
+}
