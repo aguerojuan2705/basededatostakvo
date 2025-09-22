@@ -4,11 +4,14 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
 // Middleware
 app.use(cors()); // Habilita CORS para permitir peticiones desde tu frontend
 app.use(express.json()); // Habilita el análisis del cuerpo de las peticiones en formato JSON
+
+
+const PORT = process.env.PORT || 3000;
+
+
 
 // Ruta al archivo JSON de datos
 const dataFilePath = path.join(__dirname, 'negocios.json');
