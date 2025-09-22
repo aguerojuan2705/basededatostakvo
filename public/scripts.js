@@ -8,7 +8,7 @@ let currentSort = { column: '', direction: 'asc' };
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
     // Cargar datos desde el servidor
-    fetch('http://localhost:3000/api/datos')
+    fetch('https://basededatostakvo.onrender.com')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error en la respuesta del servidor');
