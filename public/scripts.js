@@ -5,10 +5,13 @@ const datos = {
 };
 let currentSort = { column: '', direction: 'asc' };
 
+// Define la URL base de tu backend de Render
+const backendUrl = 'https://basededatostakvo.onrender.com';
+
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
     // Cargar datos desde el servidor
-    fetch('https://basededatostakvo.onrender.com')
+    fetch(`${backendUrl}/api/datos`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error en la respuesta del servidor');
@@ -23,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error al cargar datos desde el servidor:', error);
-            // Si falla, podrías mostrar un mensaje de error o usar datos de respaldo
             alert('No se pudo conectar con el servidor. Se cargará una vista vacía.');
         });
 
@@ -184,14 +186,14 @@ function cargarTablaNegocios(listaNegocios) {
     }
 
     listaNegocios.forEach(negocio => {
-        const pais = datos.paises.find(p => p.id === negocio.pais);
+        const pais = datos.paises.find(p => p.id === negocio.pais_id);
         let provincia = null;
         let ciudad = null;
 
         if (pais) {
-            provincia = pais.provincias.find(p => p.id === negocio.provincia);
+            provincia = pais.provincias.find(p => p.id === negocio.provincia_id);
             if (provincia) {
-                ciudad = provincia.ciudades.find(c => c.id === negocio.ciudad);
+                ciudad = provincia.ciudades.find(c => c.id === negocio.ciudad_id);
             }
         }
 
@@ -203,7 +205,7 @@ function cargarTablaNegocios(listaNegocios) {
                     ${negocio.telefono}
                 </a>
             </td>
-            <td>${capitalizeFirstLetter(negocio.rubro)}</td>
+            <td>${capitalizeFirstLetter(negocio.rubro_id)}</td>
             <td>${ciudad ? ciudad.nombre : 'N/A'}</td>
             <td>${provincia ? provincia.nombre : 'N/A'}</td>
             <td class="status-cell">
@@ -248,7 +250,7 @@ function toggleStatus(id) {
     if (negocio) {
         negocio.enviado = !negocio.enviado;
 
-        fetch('http://localhost:3000/api/negocios', {
+        fetch(`${backendUrl}/api/negocios`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -273,10 +275,10 @@ function filtrarNegocios() {
     const busqueda = document.getElementById('busqueda').value.toLowerCase();
 
     const negociosFiltrados = negocios.filter(n => {
-        const matchPais = pais ? n.pais === pais : true;
-        const matchProvincia = provincia ? n.provincia === provincia : true;
-        const matchCiudad = ciudad ? n.ciudad === ciudad : true;
-        const matchRubro = rubro ? n.rubro === rubro : true;
+        const matchPais = pais ? n.pais_id === pais : true;
+        const matchProvincia = provincia ? n.provincia_id === provincia : true;
+        const matchCiudad = ciudad ? n.ciudad_id === ciudad : true;
+        const matchRubro = rubro ? n.rubro_id === rubro : true;
         const matchBusqueda = n.nombre.toLowerCase().includes(busqueda);
         
         return matchPais && matchProvincia && matchCiudad && matchRubro && matchBusqueda;
@@ -349,17 +351,17 @@ function editarNegocio(id) {
     document.getElementById('business-id').value = negocio.id;
     document.getElementById('modal-nombre').value = negocio.nombre;
     document.getElementById('modal-telefono').value = negocio.telefono;
-    document.getElementById('modal-rubro').value = negocio.rubro;
-    document.getElementById('modal-pais').value = negocio.pais;
+    document.getElementById('modal-rubro').value = negocio.rubro_id;
+    document.getElementById('modal-pais').value = negocio.pais_id;
 
     // Aseguramos que los selectores se carguen en el orden correcto
-    cargarProvinciasModal(negocio.pais);
+    cargarProvinciasModal(negocio.pais_id);
     // Usamos setTimeout para que la ciudad se cargue después de la provincia
     setTimeout(() => {
-        document.getElementById('modal-provincia').value = negocio.provincia;
-        cargarCiudadesModal(negocio.provincia);
+        document.getElementById('modal-provincia').value = negocio.provincia_id;
+        cargarCiudadesModal(negocio.provincia_id);
         setTimeout(() => {
-            document.getElementById('modal-ciudad').value = negocio.ciudad;
+            document.getElementById('modal-ciudad').value = negocio.ciudad_id;
         }, 100); // Pequeño retraso para asegurar que la ciudad se cargue
     }, 100);
 
@@ -371,10 +373,10 @@ function guardarNegocio(e) {
     e.preventDefault();
 
     const id = document.getElementById('business-id').value;
-    const pais = document.getElementById('modal-pais').value;
-    const provincia = document.getElementById('modal-provincia').value;
-    const ciudad = document.getElementById('modal-ciudad').value;
-    const rubro = document.getElementById('modal-rubro').value;
+    const pais_id = document.getElementById('modal-pais').value;
+    const provincia_id = document.getElementById('modal-provincia').value;
+    const ciudad_id = document.getElementById('modal-ciudad').value;
+    const rubro_id = document.getElementById('modal-rubro').value;
     const nombre = document.getElementById('modal-nombre').value;
     const telefono = document.getElementById('modal-telefono').value;
 
@@ -383,10 +385,10 @@ function guardarNegocio(e) {
         if (index !== -1) {
             negocios[index] = {
                 id: parseInt(id),
-                pais,
-                provincia,
-                ciudad,
-                rubro,
+                pais_id,
+                provincia_id,
+                ciudad_id,
+                rubro_id,
                 nombre,
                 telefono,
                 enviado: negocios[index].enviado
@@ -396,17 +398,17 @@ function guardarNegocio(e) {
         const newId = negocios.length > 0 ? Math.max(...negocios.map(n => n.id)) + 1 : 1;
         negocios.push({
             id: newId,
-            pais,
-            provincia,
-            ciudad,
-            rubro,
+            pais_id,
+            provincia_id,
+            ciudad_id,
+            rubro_id,
             nombre,
             telefono,
             enviado: false
         });
     }
     
-    fetch('http://localhost:3000/api/negocios', {
+    fetch(`${backendUrl}/api/negocios`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -430,7 +432,7 @@ function eliminarNegocio(id) {
     if (confirm('¿Estás seguro de que quieres eliminar este negocio?')) {
         negocios = negocios.filter(n => n.id != id);
 
-        fetch('http://localhost:3000/api/negocios', {
+        fetch(`${backendUrl}/api/negocios`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -454,13 +456,13 @@ function capitalizeFirstLetter(string) {
 }
 
 function actualizarEstadisticas() {
-    const paisesUnicos = new Set(negocios.map(n => n.pais));
+    const paisesUnicos = new Set(negocios.map(n => n.pais_id));
     document.getElementById('total-paises').textContent = paisesUnicos.size;
 
-    const provinciasUnicas = new Set(negocios.map(n => n.provincia));
+    const provinciasUnicas = new Set(negocios.map(n => n.provincia_id));
     document.getElementById('total-provincias').textContent = provinciasUnicas.size;
 
-    const ciudadesUnicas = new Set(negocios.map(n => n.ciudad));
+    const ciudadesUnicas = new Set(negocios.map(n => n.ciudad_id));
     document.getElementById('total-ciudades').textContent = ciudadesUnicas.size;
 
     document.getElementById('total-negocios').textContent = negocios.length;
