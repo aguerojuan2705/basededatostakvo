@@ -11,23 +11,7 @@ const backendUrl = 'https://basededatostakvo.onrender.com';
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
     // Cargar datos desde el servidor
-    fetch(`${backendUrl}/api/datos`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta del servidor');
-            }
-            return response.json();
-        })
-        .then(serverData => {
-            negocios = serverData.negocios;
-            datos.paises = serverData.paises;
-            inicializarSelectores();
-            cargarTablaNegocios(negocios);
-        })
-        .catch(error => {
-            console.error('Error al cargar datos desde el servidor:', error);
-            alert('No se pudo conectar con el servidor. Se cargará una vista vacía.');
-        });
+    fetchDataAndInitialize();
 
     // Configurar event listeners
     document.getElementById('modal-pais').addEventListener('change', function() {
@@ -69,6 +53,23 @@ document.addEventListener('DOMContentLoaded', function() {
         cargarCiudadesModal(this.value);
     });
 });
+
+async function fetchDataAndInitialize() {
+    try {
+        const response = await fetch(`${backendUrl}/api/datos`);
+        if (!response.ok) {
+            throw new Error('Error en la respuesta del servidor');
+        }
+        const serverData = await response.json();
+        negocios = serverData.negocios;
+        datos.paises = serverData.paises;
+        inicializarSelectores();
+        cargarTablaNegocios(negocios);
+    } catch (error) {
+        console.error('Error al cargar datos desde el servidor:', error);
+        alert('No se pudo conectar con el servidor. Se cargará una vista vacía.');
+    }
+}
 
 // Funciones de inicialización
 function inicializarSelectores() {
@@ -174,7 +175,6 @@ function cargarCiudadesModal(provinciaId) {
     }
 }
 
-
 // Funciones para la tabla
 function cargarTablaNegocios(listaNegocios) {
     const tbody = document.querySelector('#tabla-negocios tbody');
@@ -245,24 +245,25 @@ function cargarTablaNegocios(listaNegocios) {
 }
 
 
-function toggleStatus(id) {
+async function toggleStatus(id) {
     const negocio = negocios.find(n => n.id == id);
     if (negocio) {
         negocio.enviado = !negocio.enviado;
-
-        fetch(`${backendUrl}/api/negocios`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(negocios)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.message);
-            cargarTablaNegocios(negocios);
-        })
-        .catch(error => console.error('Error al actualizar el estado:', error));
+        try {
+            const response = await fetch(`${backendUrl}/api/negocios`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(negocio)
+            });
+            if (!response.ok) {
+                throw new Error('Error al actualizar el estado');
+            }
+            await fetchDataAndInitialize(); // Recargar datos después de la actualización
+        } catch (error) {
+            console.error('Error al actualizar el estado:', error);
+        }
     }
 }
 
@@ -369,7 +370,7 @@ function editarNegocio(id) {
 }
 
 
-function guardarNegocio(e) {
+async function guardarNegocio(e) {
     e.preventDefault();
 
     const id = document.getElementById('business-id').value;
@@ -380,71 +381,70 @@ function guardarNegocio(e) {
     const nombre = document.getElementById('modal-nombre').value;
     const telefono = document.getElementById('modal-telefono').value;
 
+    const negocioData = {
+        nombre,
+        telefono,
+        rubro_id,
+        pais_id,
+        provincia_id,
+        ciudad_id
+    };
+
     if (id) {
-        const index = negocios.findIndex(n => n.id == id);
-        if (index !== -1) {
-            negocios[index] = {
-                id: parseInt(id),
-                pais_id,
-                provincia_id,
-                ciudad_id,
-                rubro_id,
-                nombre,
-                telefono,
-                enviado: negocios[index].enviado
-            };
-        }
+        // Si hay un ID, es una edición
+        negocioData.id = parseInt(id);
+        const negocioExistente = negocios.find(n => n.id == id);
+        negocioData.enviado = negocioExistente ? negocioExistente.enviado : false;
     } else {
-        const newId = negocios.length > 0 ? Math.max(...negocios.map(n => n.id)) + 1 : 1;
-        negocios.push({
-            id: newId,
-            pais_id,
-            provincia_id,
-            ciudad_id,
-            rubro_id,
-            nombre,
-            telefono,
-            enviado: false
-        });
+        // Si no hay ID, es un nuevo negocio
+        negocioData.enviado = false;
     }
-    
-    fetch(`${backendUrl}/api/negocios`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(negocios)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data.message);
-        cargarTablaNegocios(negocios);
-        cerrarModal();
-    })
-    .catch(error => {
-        console.error('Error al guardar el negocio:', error);
-        alert('Hubo un error al guardar el negocio. Inténtalo de nuevo.');
-    });
-}
 
+    try {
+        const method = id ? 'PUT' : 'POST';
+        const url = `${backendUrl}/api/negocios`;
 
-function eliminarNegocio(id) {
-    if (confirm('¿Estás seguro de que quieres eliminar este negocio?')) {
-        negocios = negocios.filter(n => n.id != id);
-
-        fetch(`${backendUrl}/api/negocios`, {
+        const response = await fetch(url, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(negocios)
-        })
-        .then(response => response.json())
-        .then(data => {
+            body: JSON.stringify(negocioData)
+        });
+        
+        if (!response.ok) {
+            throw new Error('Error al guardar el negocio');
+        }
+
+        const data = await response.json();
+        console.log(data.message);
+        await fetchDataAndInitialize(); // Recargar datos del servidor
+        cerrarModal();
+    } catch (error) {
+        console.error('Error al guardar el negocio:', error);
+        alert('Hubo un error al guardar el negocio. Inténtalo de nuevo.');
+    }
+}
+
+
+async function eliminarNegocio(id) {
+    if (confirm('¿Estás seguro de que quieres eliminar este negocio?')) {
+        try {
+            const response = await fetch(`${backendUrl}/api/negocios/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al eliminar el negocio');
+            }
+
+            const data = await response.json();
             console.log(data.message);
-            cargarTablaNegocios(negocios);
-        })
-        .catch(error => console.error('Error al eliminar el negocio:', error));
+            await fetchDataAndInitialize(); // Recargar datos del servidor
+        } catch (error) {
+            console.error('Error al eliminar el negocio:', error);
+            alert('Hubo un error al eliminar el negocio. Inténtalo de nuevo.');
+        }
     }
 }
 
