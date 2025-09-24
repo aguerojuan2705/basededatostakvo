@@ -337,13 +337,7 @@ footer {
     font-size: 1.8rem;
   }
 
-  /* Ocultar columnas menos importantes en el móvil para evitar el desplazamiento horizontal */
-  table thead th:nth-child(2), 
-  table tbody td:nth-child(2),
-  table thead th:nth-child(4),
-  table tbody td:nth-child(4) {
-    display: none;
-  }
+
 
   /* Simplificar los botones y las acciones */
   .btn, .action-btn {
