@@ -1,0 +1,1069 @@
+[
+  
+    {
+      "id": "argentina",
+      "nombre": "Argentina",
+      "provincias": [
+        {
+          "id": "caba",
+          "nombre": "Ciudad Autónoma de Buenos Aires",
+          "ciudades": [
+            {
+              "id": "caba",
+              "nombre": "Ciudad Autónoma de Buenos Aires"
+            }
+          ]
+        },
+        {
+          "id": "buenos_aires",
+          "nombre": "Buenos Aires",
+          "ciudades": [
+            {
+              "id": "la_plata",
+              "nombre": "La Plata"
+            },
+            {
+              "id": "mar_del_plata",
+              "nombre": "Mar del Plata"
+            },
+            {
+              "id": "bahia_blanca",
+              "nombre": "Bahía Blanca"
+            },
+            {
+              "id": "merlo",
+              "nombre": "Merlo"
+            },
+            {
+              "id": "quilmes",
+              "nombre": "Quilmes"
+            },
+            {
+              "id": "san_isidro",
+              "nombre": "San Isidro"
+            }
+          ]
+        },
+        {
+          "id": "catamarca",
+          "nombre": "Catamarca",
+          "ciudades": [
+            {
+              "id": "san_fernando_del_valle_de_catamarca",
+              "nombre": "San Fernando del Valle de Catamarca"
+            }
+          ]
+        },
+        {
+          "id": "chaco",
+          "nombre": "Chaco",
+          "ciudades": [
+            {
+              "id": "resistencia",
+              "nombre": "Resistencia"
+            }
+          ]
+        },
+        {
+          "id": "chubut",
+          "nombre": "Chubut",
+          "ciudades": [
+            {
+              "id": "comodoro_rivadavia",
+              "nombre": "Comodoro Rivadavia"
+            },
+            {
+              "id": "trelew",
+              "nombre": "Trelew"
+            },
+            {
+              "id": "rawson",
+              "nombre": "Rawson"
+            }
+          ]
+        },
+        {
+          "id": "cordoba",
+          "nombre": "Córdoba",
+          "ciudades": [
+            {
+              "id": "cordoba_capital",
+              "nombre": "Córdoba Capital"
+            },
+            {
+              "id": "rio_cuarto",
+              "nombre": "Río Cuarto"
+            },
+            {
+              "id": "villa_maria",
+              "nombre": "Villa María"
+            }
+          ]
+        },
+        {
+          "id": "corrientes",
+          "nombre": "Corrientes",
+          "ciudades": [
+            {
+              "id": "corrientes_capital",
+              "nombre": "Corrientes"
+            }
+          ]
+        },
+        {
+          "id": "entre_rios",
+          "nombre": "Entre Ríos",
+          "ciudades": [
+            {
+              "id": "parana",
+              "nombre": "Paraná"
+            },
+            {
+              "id": "concordia",
+              "nombre": "Concordia"
+            }
+          ]
+        },
+        {
+          "id": "formosa",
+          "nombre": "Formosa",
+          "ciudades": [
+            {
+              "id": "formosa_capital",
+              "nombre": "Formosa"
+            }
+          ]
+        },
+        {
+          "id": "jujuy",
+          "nombre": "Jujuy",
+          "ciudades": [
+            {
+              "id": "san_salvador_de_jujuy",
+              "nombre": "San Salvador de Jujuy"
+            }
+          ]
+        },
+        {
+          "id": "la_pampa",
+          "nombre": "La Pampa",
+          "ciudades": [
+            {
+              "id": "santa_rosa",
+              "nombre": "Santa Rosa"
+            },
+            {
+              "id": "general_pico",
+              "nombre": "General Pico"
+            }
+          ]
+        },
+        {
+          "id": "la_rioja",
+          "nombre": "La Rioja",
+          "ciudades": [
+            {
+              "id": "la_rioja_capital",
+              "nombre": "La Rioja"
+            }
+          ]
+        },
+        {
+          "id": "mendoza",
+          "nombre": "Mendoza",
+          "ciudades": [
+            {
+              "id": "mendoza_capital",
+              "nombre": "Mendoza"
+            },
+            {
+              "id": "guaymallen",
+              "nombre": "Guaymallén"
+            }
+          ]
+        },
+        {
+          "id": "misiones",
+          "nombre": "Misiones",
+          "ciudades": [
+            {
+              "id": "posadas",
+              "nombre": "Posadas"
+            },
+            {
+              "id": "obera",
+              "nombre": "Oberá"
+            }
+          ]
+        },
+        {
+          "id": "neuquen",
+          "nombre": "Neuquén",
+          "ciudades": [
+            {
+              "id": "neuquen_capital",
+              "nombre": "Neuquén"
+            },
+            {
+              "id": "san_martin_de_los_andes",
+              "nombre": "San Martín de los Andes"
+            }
+          ]
+        },
+        {
+          "id": "rio_negro",
+          "nombre": "Río Negro",
+          "ciudades": [
+            {
+              "id": "san_carlos_de_bariloche",
+              "nombre": "San Carlos de Bariloche"
+            },
+            {
+              "id": "general_roca",
+              "nombre": "General Roca"
+            }
+          ]
+        },
+        {
+          "id": "salta",
+          "nombre": "Salta",
+          "ciudades": [
+            {
+              "id": "salta_capital",
+              "nombre": "Salta"
+            },
+            {
+              "id": "san_ramon_de_la_nueva_oran",
+              "nombre": "San Ramón de la Nueva Orán"
+            }
+          ]
+        },
+        {
+          "id": "san_juan",
+          "nombre": "San Juan",
+          "ciudades": [
+            {
+              "id": "san_juan_capital",
+              "nombre": "San Juan"
+            }
+          ]
+        },
+        {
+          "id": "san_luis",
+          "nombre": "San Luis",
+          "ciudades": [
+            {
+              "id": "san_luis_capital",
+              "nombre": "San Luis"
+            },
+            {
+              "id": "villa_mercedes",
+              "nombre": "Villa Mercedes"
+            }
+          ]
+        },
+        {
+          "id": "santa_fe",
+          "nombre": "Santa Fe",
+          "ciudades": [
+            {
+              "id": "rosario",
+              "nombre": "Rosario"
+            },
+            {
+              "id": "santa_fe_capital",
+              "nombre": "Santa Fe"
+            },
+            {
+              "id": "rafaela",
+              "nombre": "Rafaela"
+            }
+          ]
+        },
+        {
+          "id": "santiago_del_estero",
+          "nombre": "Santiago del Estero",
+          "ciudades": [
+            {
+              "id": "santiago_del_estero_capital",
+              "nombre": "Santiago del Estero"
+            }
+          ]
+        },
+        {
+          "id": "tierra_del_fuego",
+          "nombre": "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+          "ciudades": [
+            {
+              "id": "ushuaia",
+              "nombre": "Ushuaia"
+            },
+            {
+              "id": "rio_grande",
+              "nombre": "Río Grande"
+            }
+          ]
+        },
+        {
+          "id": "tucuman",
+          "nombre": "Tucumán",
+          "ciudades": [
+            {
+              "id": "san_miguel_de_tucuman",
+              "nombre": "San Miguel de Tucumán"
+            }
+          ]
+        }
+      ]
+    },
+    
+    {
+      "id": "uruguay",
+      "nombre": "Uruguay",
+      "provincias": [
+        {
+          "id": "montevideo",
+          "nombre": "Montevideo",
+          "ciudades": [
+            {
+              "id": "montevideo_capital",
+              "nombre": "Montevideo"
+            }
+          ]
+        },
+        {
+          "id": "canelones",
+          "nombre": "Canelones",
+          "ciudades": [
+            {
+              "id": "las_piedras",
+              "nombre": "Las Piedras"
+            },
+            {
+              "id": "progreso",
+              "nombre": "Progreso"
+            }
+          ]
+        },
+        {
+          "id": "maldonado",
+          "nombre": "Maldonado",
+          "ciudades": [
+            {
+              "id": "maldonado_capital",
+              "nombre": "Maldonado"
+            },
+            {
+              "id": "punta_del_este",
+              "nombre": "Punta del Este"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mexico",
+      "nombre": "México",
+      "provincias": [
+        {
+          "id": "cdmx",
+          "nombre": "Ciudad de México",
+          "ciudades": [
+            {
+              "id": "coyoacan",
+              "nombre": "Coyoacán"
+            },
+            {
+              "id": "iztapalapa",
+              "nombre": "Iztapalapa"
+            }
+          ]
+        },
+        {
+          "id": "jalisco",
+          "nombre": "Jalisco",
+          "ciudades": [
+            {
+              "id": "guadalajara",
+              "nombre": "Guadalajara"
+            },
+            {
+              "id": "puerto_vallarta",
+              "nombre": "Puerto Vallarta"
+            }
+          ]
+        },
+        {
+          "id": "nuevo_leon",
+          "nombre": "Nuevo León",
+          "ciudades": [
+            {
+              "id": "monterrey",
+              "nombre": "Monterrey"
+            },
+            {
+              "id": "san_nicolas",
+              "nombre": "San Nicolás de los Garza"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "colombia",
+      "nombre": "Colombia",
+      "provincias": [
+        {
+          "id": "cundinamarca",
+          "nombre": "Cundinamarca",
+          "ciudades": [
+            {
+              "id": "bogota",
+              "nombre": "Bogotá"
+            },
+            {
+              "id": "soacha",
+              "nombre": "Soacha"
+            }
+          ]
+        },
+        {
+          "id": "antioquia",
+          "nombre": "Antioquia",
+          "ciudades": [
+            {
+              "id": "medellin",
+              "nombre": "Medellín"
+            },
+            {
+              "id": "bello",
+              "nombre": "Bello"
+            }
+          ]
+        },
+        {
+          "id": "valle_cauca",
+          "nombre": "Valle del Cauca",
+          "ciudades": [
+            {
+              "id": "cali",
+              "nombre": "Cali"
+            },
+            {
+              "id": "palmira",
+              "nombre": "Palmira"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chile",
+      "nombre": "Chile",
+      "provincias": [
+        {
+          "id": "region_metropolitana",
+          "nombre": "Región Metropolitana",
+          "ciudades": [
+            {
+              "id": "santiago",
+              "nombre": "Santiago"
+            },
+            {
+              "id": "puente_alto",
+              "nombre": "Puente Alto"
+            }
+          ]
+        },
+        {
+          "id": "valparaiso",
+          "nombre": "Valparaíso",
+          "ciudades": [
+            {
+              "id": "valparaiso_ciudad",
+              "nombre": "Valparaíso"
+            },
+            {
+              "id": "vina_del_mar",
+              "nombre": "Viña del Mar"
+            }
+          ]
+        },
+        {
+          "id": "biobio",
+          "nombre": "Biobío",
+          "ciudades": [
+            {
+              "id": "concepcion",
+              "nombre": "Concepción"
+            },
+            {
+              "id": "los_angeles",
+              "nombre": "Los Ángeles"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "peru",
+      "nombre": "Perú",
+      "provincias": [
+        {
+          "id": "lima",
+          "nombre": "Lima",
+          "ciudades": [
+            {
+              "id": "lima_capital",
+              "nombre": "Lima"
+            },
+            {
+              "id": "callao",
+              "nombre": "Callao"
+            }
+          ]
+        },
+        {
+          "id": "arequipa",
+          "nombre": "Arequipa",
+          "ciudades": [
+            {
+              "id": "arequipa_capital",
+              "nombre": "Arequipa"
+            },
+            {
+              "id": "camana",
+              "nombre": "Camaná"
+            }
+          ]
+        },
+        {
+          "id": "cusco",
+          "nombre": "Cusco",
+          "ciudades": [
+            {
+              "id": "cusco_capital",
+              "nombre": "Cusco"
+            },
+            {
+              "id": "sicuani",
+              "nombre": "Sicuani"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ecuador",
+      "nombre": "Ecuador",
+      "provincias": [
+        {
+          "id": "pichincha",
+          "nombre": "Pichincha",
+          "ciudades": [
+            {
+              "id": "quito",
+              "nombre": "Quito"
+            },
+            {
+              "id": "cayambe",
+              "nombre": "Cayambe"
+            }
+          ]
+        },
+        {
+          "id": "guayas",
+          "nombre": "Guayas",
+          "ciudades": [
+            {
+              "id": "guayaquil",
+              "nombre": "Guayaquil"
+            },
+            {
+              "id": "daule",
+              "nombre": "Daule"
+            }
+          ]
+        },
+        {
+          "id": "azuay",
+          "nombre": "Azuay",
+          "ciudades": [
+            {
+              "id": "cuenca",
+              "nombre": "Cuenca"
+            },
+            {
+              "id": "gualaceo",
+              "nombre": "Gualaceo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bolivia",
+      "nombre": "Bolivia",
+      "provincias": [
+        {
+          "id": "la_paz",
+          "nombre": "La Paz",
+          "ciudades": [
+            {
+              "id": "la_paz_ciudad",
+              "nombre": "La Paz"
+            },
+            {
+              "id": "el_alto",
+              "nombre": "El Alto"
+            }
+          ]
+        },
+        {
+          "id": "santa_cruz",
+          "nombre": "Santa Cruz",
+          "ciudades": [
+            {
+              "id": "santa_cruz_capital",
+              "nombre": "Santa Cruz de la Sierra"
+            },
+            {
+              "id": "montero",
+              "nombre": "Montero"
+            }
+          ]
+        },
+        {
+          "id": "cochabamba",
+          "nombre": "Cochabamba",
+          "ciudades": [
+            {
+              "id": "cochabamba_capital",
+              "nombre": "Cochabamba"
+            },
+            {
+              "id": "quillacollo",
+              "nombre": "Quillacollo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "paraguay",
+      "nombre": "Paraguay",
+      "provincias": [
+        {
+          "id": "central",
+          "nombre": "Central",
+          "ciudades": [
+            {
+              "id": "luque",
+              "nombre": "Luque"
+            },
+            {
+              "id": "san_lorenzo",
+              "nombre": "San Lorenzo"
+            }
+          ]
+        },
+        {
+          "id": "alto_parana",
+          "nombre": "Alto Paraná",
+          "ciudades": [
+            {
+              "id": "ciudad_del_este",
+              "nombre": "Ciudad del Este"
+            },
+            {
+              "id": "hernandarias",
+              "nombre": "Hernandarias"
+            }
+          ]
+        },
+        {
+          "id": "asuncion",
+          "nombre": "Asunción",
+          "ciudades": [
+            {
+              "id": "asuncion_capital",
+              "nombre": "Asunción"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "venezuela",
+      "nombre": "Venezuela",
+      "provincias": [
+        {
+          "id": "distrito_capital",
+          "nombre": "Distrito Capital",
+          "ciudades": [
+            {
+              "id": "caracas",
+              "nombre": "Caracas"
+            }
+          ]
+        },
+        {
+          "id": "zulia",
+          "nombre": "Zulia",
+          "ciudades": [
+            {
+              "id": "maracaibo",
+              "nombre": "Maracaibo"
+            },
+            {
+              "id": "cabimas",
+              "nombre": "Cabimas"
+            }
+          ]
+        },
+        {
+          "id": "lara",
+          "nombre": "Lara",
+          "ciudades": [
+            {
+              "id": "barquisimeto",
+              "nombre": "Barquisimeto"
+            },
+            {
+              "id": "cabudare",
+              "nombre": "Cabudare"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "guatemala",
+      "nombre": "Guatemala",
+      "provincias": [
+        {
+          "id": "guatemala_depto",
+          "nombre": "Guatemala",
+          "ciudades": [
+            {
+              "id": "guatemala_ciudad",
+              "nombre": "Ciudad de Guatemala"
+            },
+            {
+              "id": "mixco",
+              "nombre": "Mixco"
+            }
+          ]
+        },
+        {
+          "id": "quetzaltenango",
+          "nombre": "Quetzaltenango",
+          "ciudades": [
+            {
+              "id": "quetzaltenango_ciudad",
+              "nombre": "Quetzaltenango"
+            },
+            {
+              "id": "coatepeque",
+              "nombre": "Coatepeque"
+            }
+          ]
+        },
+        {
+          "id": "escuintla",
+          "nombre": "Escuintla",
+          "ciudades": [
+            {
+              "id": "escuintla_ciudad",
+              "nombre": "Escuintla"
+            },
+            {
+              "id": "puerto_san_jose",
+              "nombre": "Puerto San José"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cuba",
+      "nombre": "Cuba",
+      "provincias": [
+        {
+          "id": "la_habana",
+          "nombre": "La Habana",
+          "ciudades": [
+            {
+              "id": "habana_capital",
+              "nombre": "La Habana"
+            }
+          ]
+        },
+        {
+          "id": "santiago_cuba",
+          "nombre": "Santiago de Cuba",
+          "ciudades": [
+            {
+              "id": "santiago",
+              "nombre": "Santiago de Cuba"
+            },
+            {
+              "id": "palma_soriano",
+              "nombre": "Palma Soriano"
+            }
+          ]
+        },
+        {
+          "id": "holguin",
+          "nombre": "Holguín",
+          "ciudades": [
+            {
+              "id": "holguin_capital",
+              "nombre": "Holguín"
+            },
+            {
+              "id": "moa",
+              "nombre": "Moa"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "republica_dominicana",
+      "nombre": "República Dominicana",
+      "provincias": [
+        {
+          "id": "distrito_nacional",
+          "nombre": "Distrito Nacional",
+          "ciudades": [
+            {
+              "id": "santo_domingo",
+              "nombre": "Santo Domingo"
+            }
+          ]
+        },
+        {
+          "id": "santiago",
+          "nombre": "Santiago",
+          "ciudades": [
+            {
+              "id": "santiago_ciudad",
+              "nombre": "Santiago de los Caballeros"
+            },
+            {
+              "id": "tamboril",
+              "nombre": "Tamboril"
+            }
+          ]
+        },
+        {
+          "id": "la_vega",
+          "nombre": "La Vega",
+          "ciudades": [
+            {
+              "id": "la_vega_ciudad",
+              "nombre": "La Vega"
+            },
+            {
+              "id": "constanza",
+              "nombre": "Constanza"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "honduras",
+      "nombre": "Honduras",
+      "provincias": [
+        {
+          "id": "francisco_morazan",
+          "nombre": "Francisco Morazán",
+          "ciudades": [
+            {
+              "id": "tegucigalpa",
+              "nombre": "Tegucigalpa"
+            },
+            {
+              "id": "comayaguela",
+              "nombre": "Comayagüela"
+            }
+          ]
+        },
+        {
+          "id": "cortes",
+          "nombre": "Cortés",
+          "ciudades": [
+            {
+              "id": "san_pedro_sula",
+              "nombre": "San Pedro Sula"
+            },
+            {
+              "id": "choloma",
+              "nombre": "Choloma"
+            }
+          ]
+        },
+        {
+          "id": "atlantida",
+          "nombre": "Atlántida",
+          "ciudades": [
+            {
+              "id": "la_ceiba",
+              "nombre": "La Ceiba"
+            },
+            {
+              "id": "tela",
+              "nombre": "Tela"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "el_salvador",
+      "nombre": "El Salvador",
+      "provincias": [
+        {
+          "id": "san_salvador",
+          "nombre": "San Salvador",
+          "ciudades": [
+            {
+              "id": "san_salvador_ciudad",
+              "nombre": "San Salvador"
+            },
+            {
+              "id": "soyapango",
+              "nombre": "Soyapango"
+            }
+          ]
+        },
+        {
+          "id": "santa_ana",
+          "nombre": "Santa Ana",
+          "ciudades": [
+            {
+              "id": "santa_ana_ciudad",
+              "nombre": "Santa Ana"
+            },
+            {
+              "id": "metapan",
+              "nombre": "Metapán"
+            }
+          ]
+        },
+        {
+          "id": "la_libertad",
+          "nombre": "La Libertad",
+          "ciudades": [
+            {
+              "id": "santa_tecla",
+              "nombre": "Santa Tecla"
+            },
+            {
+              "id": "nueva_san_salvador",
+              "nombre": "Nueva San Salvador"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nicaragua",
+      "nombre": "Nicaragua",
+      "provincias": [
+        {
+          "id": "managua",
+          "nombre": "Managua",
+          "ciudades": [
+            {
+              "id": "managua_ciudad",
+              "nombre": "Managua"
+            },
+            {
+              "id": "tipitapa",
+              "nombre": "Tipitapa"
+            }
+          ]
+        },
+        {
+          "id": "leon",
+          "nombre": "León",
+          "ciudades": [
+            {
+              "id": "leon_ciudad",
+              "nombre": "León"
+            },
+            {
+              "id": "nagarote",
+              "nombre": "Nagarote"
+            }
+          ]
+        },
+        {
+          "id": "granada",
+          "nombre": "Granada",
+          "ciudades": [
+            {
+              "id": "granada_ciudad",
+              "nombre": "Granada"
+            },
+            {
+              "id": "nandaime",
+              "nombre": "Nandaime"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "costa_rica",
+      "nombre": "Costa Rica",
+      "provincias": [
+        {
+          "id": "san_jose",
+          "nombre": "San José",
+          "ciudades": [
+            {
+              "id": "san_jose_ciudad",
+              "nombre": "San José"
+            },
+            {
+              "id": "desamparados",
+              "nombre": "Desamparados"
+            }
+          ]
+        },
+        {
+          "id": "alajuela",
+          "nombre": "Alajuela",
+          "ciudades": [
+            {
+              "id": "alajuela_ciudad",
+              "nombre": "Alajuela"
+            },
+            {
+              "id": "san_carlos",
+              "nombre": "San Carlos"
+            }
+          ]
+        },
+        {
+          "id": "cartago",
+          "nombre": "Cartago",
+          "ciudades": [
+            {
+              "id": "cartago_ciudad",
+              "nombre": "Cartago"
+            },
+            {
+              "id": "turrialba",
+              "nombre": "Turrialba"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+
