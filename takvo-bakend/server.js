@@ -13,6 +13,9 @@ import { Pool } from 'pg'; // Usamos pg para interactuar con PostgreSQL (Supabas
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// RUTA CORREGIDA: Subimos un nivel para encontrar la carpeta public
+const staticFilesPath = path.join(__dirname, '..', 'public');
+
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -38,7 +41,6 @@ function formatForeignKeyId(idValue) {
     // Si es nulo, indefinido, o una cadena vacía, devuelve NULL para la DB
     return null; 
 }
-
 
 // *********************************************************************************
 // API 1: CARGAR TODOS LOS DATOS (NEGOCIOS, PAISES/PROVINCIAS/CIUDADES, RUBROS)
@@ -94,7 +96,6 @@ app.get('/api/datos', async (req, res) => {
     }
 });
 
-
 // *********************************************************************************
 // API 2: GUARDAR/ACTUALIZAR NEGOCIO (POST/PUT)
 // *********************************************************************************
@@ -139,7 +140,6 @@ app.post('/api/negocios', async (req, res) => {
     }
 });
 
-
 app.put('/api/negocios', async (req, res) => {
     const { 
         id, nombre, telefono, rubro_id, enviado, pais_id, provincia_id, ciudad_id 
@@ -182,7 +182,6 @@ app.put('/api/negocios', async (req, res) => {
     }
 });
 
-
 // *********************************************************************************
 // API 3: ELIMINAR NEGOCIO (DELETE)
 // *********************************************************************************
@@ -204,7 +203,6 @@ app.delete('/api/negocios/:id', async (req, res) => {
         res.status(500).json({ error: `Error al eliminar el negocio: ${error.message}` });
     }
 });
-
 
 // *********************************************************************************
 // API 4: REGISTRAR CONTACTO Y ACTUALIZAR CONTADOR
@@ -266,21 +264,17 @@ app.get('/api/negocios/historial/:id', async (req, res) => {
     }
 });
 
-
 // *********************************************************************************
-// CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS Y RUTA PRINCIPAL
+// CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS Y RUTA PRINCIPAL - CORREGIDA
 // *********************************************************************************
-
-// Define la ruta a la carpeta 'public' donde se encuentra el index.html, CSS y JS
-const staticFilesPath = path.join(__dirname, 'public');
 
 // Middleware para servir archivos estáticos (debe ir ANTES del catch-all)
+// RUTA CORREGIDA: Ahora apunta correctamente a '../public'
 app.use(express.static(staticFilesPath));
 
-// Ruta Catch-All (SOLUCIÓN FINAL): Sirve el index.html para CUALQUIER otra solicitud.
-// Usamos app.use() sin una ruta específica para evitar el problema del path-to-regexp.
+// Ruta Catch-All CORREGIDA: Sirve el index.html para CUALQUIER otra solicitud.
 app.use((req, res) => { 
-    // Asegura que se envíe el index.html de la carpeta 'public'
+    // Asegura que se envíe el index.html de la carpeta 'public' CORREGIDA
     const indexPath = path.join(staticFilesPath, 'index.html');
     res.sendFile(indexPath, (err) => {
         if (err) {
@@ -290,8 +284,8 @@ app.use((req, res) => {
     });
 });
 
-
 // --- Inicio del Servidor ---
 app.listen(PORT, () => {
     console.log(`✅ Servidor Express iniciado y escuchando en el puerto ${PORT}`);
+    console.log(`📁 Sirviendo archivos estáticos desde: ${staticFilesPath}`);
 });
