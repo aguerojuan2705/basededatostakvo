@@ -230,7 +230,7 @@ function cargarTablaNegocios(listaNegocios) {
             <td>
                 <span style="font-weight: 600;">${negocio.nombre}</span>
                 <div class="social-links">
-                    ${negocio.email ? `<a href="mailto:${negocio.email}" target="_blank" title="Enviar Email"><i class="fas fa-envelope social-icon email-icon"></i></a>` : ''}
+                    ${negocio.gmaps_url ? `<a href="${negocio.gmaps_url}" target="_blank" title="Ver en Google Maps"><i class="fas fa-map-marked-alt social-icon gmaps-icon"></i></a>` : ''}
                     ${negocio.instagram ? `<a href="https://www.instagram.com/${negocio.instagram.replace('@', '')}" target="_blank" title="Ver Instagram"><i class="fab fa-instagram social-icon instagram-icon"></i></a>` : ''}
                 </div>
             </td>

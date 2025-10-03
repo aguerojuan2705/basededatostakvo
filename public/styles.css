@@ -170,6 +170,20 @@ td:has(.ultima-fecha-nunca) { /* Si decides envolver 'Nunca' en un span con esa 
     color: white;
 }
 
+/* ------------------------------------------- */
+/* ESTILOS PARA ÍCONO DE GOOGLE MAPS */
+/* ------------------------------------------- */
+
+/* Estilo para el ícono de Google Maps */
+.gmaps-icon {
+    color: #4285F4; /* Azul de Google */
+}
+.gmaps-icon:hover {
+    color: #34A853; /* Verde de Google al pasar el mouse */
+}
+
+/* El resto de tus estilos de social-links y instagram-icon se mantienen */
+
 .no-link-style {
     color: inherit; /* Hereda el color del texto del padre (normalmente negro o gris) */
     text-decoration: none; /* Elimina el subrayado */

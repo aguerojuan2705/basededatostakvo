@@ -47,7 +47,7 @@ app.get('/api/datos', async (req, res) => {
             ciudad_id, 
             recontacto_contador, 
             ultima_fecha_contacto,
-            email,          
+            gmaps_url,          
             instagram       
         FROM negocios
     `;
