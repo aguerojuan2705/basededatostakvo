@@ -1,52 +1,44 @@
-// server.js
-// Servidor Express configurado para:
-// 1. Servir archivos estáticos desde la carpeta 'public'.
-// 2. Manejar todas las APIs del CRM.
-// 3. Incluir las correcciones para el manejo de claves foráneas (NULL y minúsculas).
-
+// server.js - VERSIÓN COMPLETAMENTE CORREGIDA
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { Pool } from 'pg'; // Usamos pg para interactuar con PostgreSQL (Supabase)
+import { Pool } from 'pg';
+import cors from 'cors';
 
-// --- Configuración de Paths para Entornos Modernos (ES Modules) ---
+// --- Configuración de Paths ---
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// RUTA CORREGIDA: Subimos un nivel para encontrar la carpeta public
 const staticFilesPath = path.join(__dirname, '..', 'public');
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
+// --- Middleware CRÍTICO ---
+app.use(cors()); // 🔥 IMPORTANTE: Habilita CORS
+app.use(express.json());
+
 // --- Configuración de la Base de Datos ---
-// Asegúrate de que la variable de entorno DATABASE_URL esté configurada en Render
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL, 
+    connectionString: process.env.DATABASE_URL,
     ssl: {
-        rejectUnauthorized: false // Necesario para conexiones SSL con Render/Supabase
+        rejectUnauthorized: false
     }
 });
 
-// Middleware
-app.use(express.json()); // Habilita Express para parsear JSON en el body de las peticiones
-
-// --- UTILIDAD CRÍTICA PARA CLAVES FORÁNEAS (SOLUCIONA EL ERROR FK) ---
-// Asegura que los IDs de claves foráneas sean minúsculas o NULL si están vacíos.
+// --- Utilidad para Claves Foráneas ---
 function formatForeignKeyId(idValue) {
     if (typeof idValue === 'string' && idValue.trim() !== '') {
-        // Devuelve el ID en minúsculas para coincidir con la DB (ej. 'argentina')
         return idValue.trim().toLowerCase();
     }
-    // Si es nulo, indefinido, o una cadena vacía, devuelve NULL para la DB
-    return null; 
+    return null;
 }
 
 // *********************************************************************************
-// API 1: CARGAR TODOS LOS DATOS (NEGOCIOS, PAISES/PROVINCIAS/CIUDADES, RUBROS)
+// API 1: CARGAR TODOS LOS DATOS - CORREGIDA
 // *********************************************************************************
 
 app.get('/api/datos', async (req, res) => {
+    console.log('📥 Solicitando datos iniciales...');
     try {
         // Consulta 1: Negocios
         const negociosQuery = `
@@ -56,62 +48,78 @@ app.get('/api/datos', async (req, res) => {
             FROM negocios ORDER BY id DESC;
         `;
         const { rows: negocios } = await pool.query(negociosQuery);
+        console.log(`✅ Negocios cargados: ${negocios.length}`);
 
-        // Consulta 2 y 3: Estructura geográfica y Rubros
-        const paisesQuery = `
-            SELECT id, nombre FROM paises;
-            SELECT p.id, p.nombre, p.pais_id, p.poblacion FROM provincias p;
-            SELECT c.id, c.nombre, c.provincia_id FROM ciudades c;
-        `;
-        const results = await pool.query(paisesQuery);
-        
-        const paisesData = results[0].rows;
-        const provinciasData = results[1].rows;
-        const ciudadesData = results[2].rows;
+        // Consultas SEPARADAS para datos geográficos (más confiable)
+        const paisesResult = await pool.query('SELECT id, nombre FROM paises;');
+        const provinciasResult = await pool.query('SELECT id, nombre, pais_id, poblacion FROM provincias;');
+        const ciudadesResult = await pool.query('SELECT id, nombre, provincia_id FROM ciudades;');
+        const rubrosResult = await pool.query('SELECT id, nombre FROM rubros ORDER BY nombre ASC;');
 
-        // Estructurar los datos geográficos jerárquicamente
-        const estructurados = paisesData.map(pais => {
-            pais.provincias = provinciasData
-                .filter(p => p.pais_id === pais.id)
+        const paisesData = paisesResult.rows;
+        const provinciasData = provinciasResult.rows;
+        const ciudadesData = ciudadesResult.rows;
+        const rubrosData = rubrosResult.rows;
+
+        console.log(`✅ Países: ${paisesData.length}, Provincias: ${provinciasData.length}, Ciudades: ${ciudadesData.length}, Rubros: ${rubrosData.length}`);
+
+        // Estructurar datos geográficos
+        const paisesEstructurados = paisesData.map(pais => {
+            const provinciasDelPais = provinciasData
+                .filter(provincia => provincia.pais_id === pais.id)
                 .map(provincia => {
-                    provincia.ciudades = ciudadesData.filter(c => c.provincia_id === provincia.id);
-                    return provincia;
+                    const ciudadesDeProvincia = ciudadesData
+                        .filter(ciudad => ciudad.provincia_id === provincia.id);
+                    return {
+                        ...provincia,
+                        ciudades: ciudadesDeProvincia
+                    };
                 });
-            return pais;
+            return {
+                ...pais,
+                provincias: provinciasDelPais
+            };
         });
 
-        // Consulta 4: Rubros
-        const rubrosQuery = 'SELECT id, nombre FROM rubros ORDER BY nombre ASC;';
-        const { rows: rubros } = await pool.query(rubrosQuery);
-        
         res.json({
             negocios,
-            paises: estructurados,
-            rubros
+            paises: paisesEstructurados,
+            rubros: rubrosData
         });
 
     } catch (error) {
-        console.error('Error al obtener datos iniciales:', error);
-        res.status(500).json({ error: 'Error interno del servidor al cargar datos.' });
+        console.error('❌ Error al obtener datos iniciales:', error);
+        res.status(500).json({ 
+            error: 'Error interno del servidor al cargar datos.',
+            details: error.message 
+        });
     }
 });
 
 // *********************************************************************************
-// API 2: GUARDAR/ACTUALIZAR NEGOCIO (POST/PUT)
+// API 2: GUARDAR/ACTUALIZAR NEGOCIO - CORREGIDA
 // *********************************************************************************
 
 app.post('/api/negocios', async (req, res) => {
+    console.log('📥 Creando nuevo negocio:', req.body);
     const { 
         nombre, telefono, rubro_id, enviado, pais_id, provincia_id, ciudad_id 
     } = req.body;
     
-    // Aplicar la utilidad de formato a los IDs de clave foránea
-    const formattedRubroId = formatForeignKeyId(rubro_id);
-    const formattedPaisId = formatForeignKeyId(pais_id);
-    const formattedProvinciaId = formatForeignKeyId(provincia_id);
-    const formattedCiudadId = formatForeignKeyId(ciudad_id);
-
     try {
+        // Validar campos requeridos
+        if (!nombre || !telefono) {
+            return res.status(400).json({ 
+                error: 'Nombre y teléfono son campos requeridos' 
+            });
+        }
+
+        // Formatear IDs
+        const formattedRubroId = formatForeignKeyId(rubro_id);
+        const formattedPaisId = formatForeignKeyId(pais_id);
+        const formattedProvinciaId = formatForeignKeyId(provincia_id);
+        const formattedCiudadId = formatForeignKeyId(ciudad_id);
+
         const query = `
             INSERT INTO negocios(
                 nombre, telefono, rubro_id, enviado, pais_id, provincia_id, ciudad_id
@@ -123,35 +131,46 @@ app.post('/api/negocios', async (req, res) => {
             nombre,
             telefono,
             formattedRubroId,
-            enviado,
+            enviado || false,
             formattedPaisId,
             formattedProvinciaId,
             formattedCiudadId
         ];
 
+        console.log('🚀 Ejecutando query con valores:', values);
+
         const result = await pool.query(query, values);
+        console.log('✅ Negocio creado con ID:', result.rows[0].id);
+        
         res.status(201).json({ 
             message: 'Negocio creado con éxito', 
             id: result.rows[0].id 
         });
     } catch (error) {
-        console.error('Error al crear el negocio:', error);
-        res.status(500).json({ error: `Error al crear el negocio: ${error.message}` });
+        console.error('❌ Error al crear el negocio:', error);
+        res.status(500).json({ 
+            error: 'Error al crear el negocio',
+            details: error.message 
+        });
     }
 });
 
 app.put('/api/negocios', async (req, res) => {
+    console.log('📥 Actualizando negocio:', req.body);
     const { 
         id, nombre, telefono, rubro_id, enviado, pais_id, provincia_id, ciudad_id 
     } = req.body;
     
-    // Aplicar la utilidad de formato a los IDs de clave foránea
-    const formattedRubroId = formatForeignKeyId(rubro_id);
-    const formattedPaisId = formatForeignKeyId(pais_id);
-    const formattedProvinciaId = formatForeignKeyId(provincia_id);
-    const formattedCiudadId = formatForeignKeyId(ciudad_id);
-
     try {
+        if (!id) {
+            return res.status(400).json({ error: 'ID del negocio es requerido' });
+        }
+
+        const formattedRubroId = formatForeignKeyId(rubro_id);
+        const formattedPaisId = formatForeignKeyId(pais_id);
+        const formattedProvinciaId = formatForeignKeyId(provincia_id);
+        const formattedCiudadId = formatForeignKeyId(ciudad_id);
+
         const query = `
             UPDATE negocios SET
                 nombre = $1,
@@ -174,22 +193,32 @@ app.put('/api/negocios', async (req, res) => {
             id
         ];
 
-        await pool.query(query, values);
+        const result = await pool.query(query, values);
+        
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: 'Negocio no encontrado' });
+        }
+
+        console.log('✅ Negocio actualizado:', id);
         res.json({ message: 'Negocio actualizado con éxito' });
     } catch (error) {
-        console.error('Error al actualizar el negocio:', error);
-        res.status(500).json({ error: `Error al actualizar el negocio: ${error.message}` });
+        console.error('❌ Error al actualizar el negocio:', error);
+        res.status(500).json({ 
+            error: 'Error al actualizar el negocio',
+            details: error.message 
+        });
     }
 });
 
 // *********************************************************************************
-// API 3: ELIMINAR NEGOCIO (DELETE)
+// API 3: ELIMINAR NEGOCIO - CORREGIDA
 // *********************************************************************************
 
 app.delete('/api/negocios/:id', async (req, res) => {
     const { id } = req.params;
+    console.log('🗑️ Eliminando negocio ID:', id);
+    
     try {
-        // Nota: ON DELETE CASCADE en el historial eliminará las interacciones
         const query = 'DELETE FROM negocios WHERE id = $1;';
         const result = await pool.query(query, [id]);
 
@@ -197,30 +226,35 @@ app.delete('/api/negocios/:id', async (req, res) => {
             return res.status(404).json({ error: 'Negocio no encontrado' });
         }
 
+        console.log('✅ Negocio eliminado:', id);
         res.json({ message: 'Negocio y su historial eliminados con éxito' });
     } catch (error) {
-        console.error('Error al eliminar el negocio:', error);
-        res.status(500).json({ error: `Error al eliminar el negocio: ${error.message}` });
+        console.error('❌ Error al eliminar el negocio:', error);
+        res.status(500).json({ 
+            error: 'Error al eliminar el negocio',
+            details: error.message 
+        });
     }
 });
 
 // *********************************************************************************
-// API 4: REGISTRAR CONTACTO Y ACTUALIZAR CONTADOR
+// API 4: REGISTRAR CONTACTO - CORREGIDA (USANDO negocios_id)
 // *********************************************************************************
 
 app.post('/api/negocios/registrar-contacto', async (req, res) => {
-    const { id, medio, notas } = req.body; // id es el ID del negocio
+    const { id, medio, notas } = req.body;
+    console.log('📞 Registrando contacto para negocio:', id);
+    
     try {
-        await pool.query('BEGIN'); // Inicia una transacción
+        await pool.query('BEGIN');
 
-        // 1. Insertar la nueva interacción en el historial
+        // 🔥 CORRECCIÓN: Usar negocios_id en lugar de negocio_id
         const insertHistorialQuery = `
-            INSERT INTO historial_interacciones (negocio_id, fecha_interaccion, medio, notas)
+            INSERT INTO historial_interacciones (negocios_id, fecha_interaccion, medio, notas)
             VALUES ($1, NOW(), $2, $3);
         `;
         await pool.query(insertHistorialQuery, [id, medio, notas]);
 
-        // 2. Actualizar el contador y la fecha del negocio
         const updateNegocioQuery = `
             UPDATE negocios
             SET recontacto_contador = COALESCE(recontacto_contador, 0) + 1,
@@ -229,56 +263,64 @@ app.post('/api/negocios/registrar-contacto', async (req, res) => {
         `;
         await pool.query(updateNegocioQuery, [id]);
 
-        await pool.query('COMMIT'); // Confirma la transacción
+        await pool.query('COMMIT');
+        console.log('✅ Contacto registrado para negocio:', id);
         res.status(200).json({ message: 'Recontacto registrado y negocio actualizado con éxito' });
     } catch (error) {
-        await pool.query('ROLLBACK'); // En caso de error, revierte
-        console.error('Error al registrar el contacto:', error);
-        res.status(500).json({ error: `Error en la transacción de contacto: ${error.message}` });
+        await pool.query('ROLLBACK');
+        console.error('❌ Error al registrar el contacto:', error);
+        res.status(500).json({ 
+            error: 'Error en la transacción de contacto',
+            details: error.message 
+        });
     }
 });
 
 // *********************************************************************************
-// API 5: OBTENER HISTORIAL DE INTERACCIONES
+// API 5: OBTENER HISTORIAL - CORREGIDA (USANDO negocios_id)
 // *********************************************************************************
 
 app.get('/api/negocios/historial/:id', async (req, res) => {
     const { id } = req.params;
+    console.log('📋 Solicitando historial para negocio:', id);
+    
     try {
+        // 🔥 CORRECCIÓN: Usar negocios_id en lugar de negocio_id
         const query = `
             SELECT fecha_interaccion, medio, notas 
             FROM historial_interacciones 
-            WHERE negocio_id = $1 
+            WHERE negocios_id = $1 
             ORDER BY fecha_interaccion DESC;
         `;
         const { rows: historial } = await pool.query(query, [id]);
         
+        console.log(`📊 Historial encontrado: ${historial.length} registros`);
+        
         if (historial.length === 0) {
-            return res.status(204).json({ message: 'No hay historial para este negocio.' });
+            return res.status(200).json({ historial: [] });
         }
 
         res.json({ historial });
     } catch (error) {
-        console.error('Error al obtener el historial:', error);
-        res.status(500).json({ error: 'Error interno del servidor al obtener historial.' });
+        console.error('❌ Error al obtener el historial:', error);
+        res.status(500).json({ 
+            error: 'Error interno del servidor al obtener historial.',
+            details: error.message 
+        });
     }
 });
 
 // *********************************************************************************
-// CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS Y RUTA PRINCIPAL - CORREGIDA
+// CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS
 // *********************************************************************************
 
-// Middleware para servir archivos estáticos (debe ir ANTES del catch-all)
-// RUTA CORREGIDA: Ahora apunta correctamente a '../public'
 app.use(express.static(staticFilesPath));
 
-// Ruta Catch-All CORREGIDA: Sirve el index.html para CUALQUIER otra solicitud.
 app.use((req, res) => { 
-    // Asegura que se envíe el index.html de la carpeta 'public' CORREGIDA
     const indexPath = path.join(staticFilesPath, 'index.html');
     res.sendFile(indexPath, (err) => {
         if (err) {
-            console.error('Error al enviar index.html:', err);
+            console.error('❌ Error al enviar index.html:', err);
             res.status(500).send('Error al cargar la aplicación web.');
         }
     });
@@ -288,4 +330,5 @@ app.use((req, res) => {
 app.listen(PORT, () => {
     console.log(`✅ Servidor Express iniciado y escuchando en el puerto ${PORT}`);
     console.log(`📁 Sirviendo archivos estáticos desde: ${staticFilesPath}`);
+    console.log(`🌐 Backend URL: https://basededatostakvo.onrender.com`);
 });
