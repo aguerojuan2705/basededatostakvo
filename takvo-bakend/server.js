@@ -35,7 +35,7 @@ client.connect()
 // API 1: Obtener todos los datos
 app.get('/api/datos', async (req, res) => {
   try {
-    const negociosResult = await client.query('SELECT * FROM negocios');
+    const negociosResult = await client.query('SELECT * FROM negocios');
     
     const paisesResult = await client.query('SELECT * FROM paises');
     const provinciasResult = await client.query('SELECT * FROM provincias');
@@ -64,33 +64,49 @@ app.get('/api/datos', async (req, res) => {
   }
 });
 
-// API 2: Actualizar o crear un negocio
+// API 2: Actualizar o crear un negocio (CORREGIDO)
 app.put('/api/negocios', async (req, res) => {
-  const { id, nombre, telefono, rubro_id, enviado, pais_id, provincia_id, ciudad_id } = req.body;
-  try {
-    if (id) {
-      // Si el negocio ya tiene un ID, lo actualizamos
-      const updateQuery = `
-        UPDATE negocios
-        SET nombre = $1, telefono = $2, rubro_id = $3, enviado = $4, pais_id = $5, provincia_id = $6, ciudad_id = $7
-        WHERE id = $8
-      `;
-      await client.query(updateQuery, [nombre, telefono, rubro_id, enviado, pais_id, provincia_id, ciudad_id, id]);
-      res.status(200).json({ message: 'Negocio actualizado con éxito' });
-    } else {
-      // Si es un nuevo negocio, lo insertamos sin un ID
-      const insertQuery = `
-        INSERT INTO negocios(nombre, telefono, rubro_id, enviado, pais_id, provincia_id, ciudad_id) 
-        VALUES($1, $2, $3, $4, $5, $6, $7)
-        RETURNING id
-      `;
-      const result = await client.query(insertQuery, [nombre, telefono, rubro_id, enviado, pais_id, provincia_id, ciudad_id]);
-      res.status(201).json({ message: 'Negocio agregado con éxito', id: result.rows[0].id });
-    }
-  } catch (error) {
-    console.error('Error al guardar el negocio en la base de datos:', error);
-    res.status(500).json({ error: 'Error del servidor' });
-  }
+  const { id, nombre, telefono, rubro_id, enviado, pais_id, provincia_id, ciudad_id } = req.body;
+  try {
+    if (id) {
+      // Si el negocio ya tiene un ID, lo actualizamos (Esta parte estaba correcta)
+      const updateQuery = `
+        UPDATE negocios
+        SET nombre = $1, telefono = $2, rubro_id = $3, enviado = $4, pais_id = $5, provincia_id = $6, ciudad_id = $7
+        WHERE id = $8
+      `;
+      await client.query(updateQuery, [nombre, telefono, rubro_id, enviado, pais_id, provincia_id, ciudad_id, id]);
+      res.status(200).json({ message: 'Negocio actualizado con éxito' });
+    } else {
+      // CORRECCIÓN AQUÍ: Se incluyen recontacto_contador y ultima_fecha_contacto
+      // para evitar errores de columna no nula en la base de datos.
+      const insertQuery = `
+        INSERT INTO negocios(
+          nombre, 
+          telefono, 
+          rubro_id, 
+          enviado, 
+          pais_id, 
+          provincia_id, 
+          ciudad_id,
+          recontacto_contador,         -- Incluido
+          ultima_fecha_contacto         -- Incluido
+        ) 
+        VALUES(
+          $1, $2, $3, $4, $5, $6, $7, 
+          0,                            -- recontacto_contador (Valor inicial 0)
+          NULL                          -- ultima_fecha_contacto (Valor inicial NULL)
+        )
+        RETURNING id
+      `;
+      const result = await client.query(insertQuery, [nombre, telefono, rubro_id, enviado, pais_id, provincia_id, ciudad_id]);
+      res.status(201).json({ message: 'Negocio agregado con éxito', id: result.rows[0].id });
+    }
+  } catch (error) {
+    console.error('Error al guardar el negocio en la base de datos:', error);
+    // Si ves un error de columna "no existe", significa que el frontend sigue enviando campos que no tienes.
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 });
 
 // API 3: Eliminar un negocio
