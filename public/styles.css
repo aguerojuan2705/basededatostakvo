@@ -140,49 +140,9 @@ td:has(.ultima-fecha-nunca) { /* Si decides envolver 'Nunca' en un span con esa 
 }
 
 .sortable {
-    position: relative;
-    padding-right: 25px;
     cursor: pointer;
     user-select: none;
 }
-
-/* Ocultar el ícono por defecto */
-.sortable::after {
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    content: "\f0dc"; /* Ícono de doble flecha (sin ordenar) */
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: rgba(255, 255, 255, 0.4); /* Flecha gris clara */
-    font-size: 0.8rem;
-}
-
-/* Íconos cuando la columna está activamente ordenada */
-.sort-asc::after {
-    content: "\f0de"; /* Flecha ascendente */
-    color: white; /* Flecha blanca para indicar el orden activo */
-}
-
-.sort-desc::after {
-    content: "\f0dd"; /* Flecha descendente */
-    color: white;
-}
-
-/* ------------------------------------------- */
-/* ESTILOS PARA ÍCONO DE GOOGLE MAPS */
-/* ------------------------------------------- */
-
-/* Estilo para el ícono de Google Maps */
-.gmaps-icon {
-    color: #4285F4; /* Azul de Google */
-}
-.gmaps-icon:hover {
-    color: #34A853; /* Verde de Google al pasar el mouse */
-}
-
-/* El resto de tus estilos de social-links y instagram-icon se mantienen */
 
 .no-link-style {
     color: inherit; /* Hereda el color del texto del padre (normalmente negro o gris) */
@@ -436,47 +396,6 @@ footer {
 .contact-btn:hover {
     background: #2980b9;
 }
-
-
-/* ------------------------------------------- */
-/* ESTILOS PARA ÍCONOS SOCIALES EN LA TABLA */
-/* ------------------------------------------- */
-
-.social-links {
-    display: flex;
-    gap: 8px; /* Espacio entre los íconos */
-    margin-top: 4px;
-}
-
-.social-icon {
-    font-size: 1.1rem; /* Tamaño de los íconos */
-    transition: color 0.2s;
-}
-
-/* Estilos específicos por red social */
-.whatsapp-icon {
-    color: #25d366; /* Verde WhatsApp */
-    margin-right: 5px;
-}
-.whatsapp-icon:hover {
-    color: #128c7e;
-}
-
-.email-icon {
-    color: #c0392b; /* Rojo/Naranja Email */
-}
-.email-icon:hover {
-    color: var(--accent-color);
-}
-
-.instagram-icon {
-    /* Usar un color estándar o un gradiente si es posible, aquí usaremos un púrpura */
-    color: #833ab4; 
-}
-.instagram-icon:hover {
-    color: #e1306c;
-}
-
 
 @media (max-width: 768px) {
     .container{
