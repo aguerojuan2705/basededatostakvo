@@ -433,61 +433,65 @@ function editarNegocio(id) {
 
 
 async function guardarNegocio(e) {
-    e.preventDefault();
+    e.preventDefault();
 
-    const id = document.getElementById('business-id').value;
-    const pais_id = document.getElementById('modal-pais').value;
-    const provincia_id = document.getElementById('modal-provincia').value;
-    const ciudad_id = document.getElementById('modal-ciudad').value;
-    const rubro_id = document.getElementById('modal-rubro').value;
-    const nombre = document.getElementById('modal-nombre').value;
-    const telefono = document.getElementById('modal-telefono').value;
+    const id = document.getElementById('business-id').value;
+    const pais_id = document.getElementById('modal-pais').value;
+    const provincia_id = document.getElementById('modal-provincia').value;
+    const ciudad_id = document.getElementById('modal-ciudad').value;
+    const rubro_id = document.getElementById('modal-rubro').value;
+    const nombre = document.getElementById('modal-nombre').value;
+    const telefono = document.getElementById('modal-telefono').value;
 
-    const negocioData = {
-        nombre,
-        telefono,
-        rubro_id,
-        pais_id,
-        provincia_id,
-        ciudad_id
-    };
+    const negocioData = {
+        nombre,
+        telefono,
+        rubro_id,
+        pais_id,
+        provincia_id,
+        ciudad_id
+    };
 
-    if (id) {
-        // Si hay un ID, es una edición
-        negocioData.id = parseInt(id);
-        const negocioExistente = negocios.find(n => n.id == id);
-        negocioData.enviado = negocioExistente ? negocioExistente.enviado : false;
-    } else {
-        // Si no hay ID, es un nuevo negocio
-        negocioData.enviado = false;
-    }
+    if (id) {
+        // Si hay un ID, es una edición
+        negocioData.id = parseInt(id);
+        const negocioExistente = negocios.find(n => n.id == id);
+        // Aseguramos que enviado se mantenga, si existe
+        negocioData.enviado = negocioExistente ? negocioExistente.enviado : false;
+    } else {
+        // Si no hay ID, es un nuevo negocio
+        // NOTA: Tu backend usa la ausencia de 'id' en el body para INSERTAR.
+        negocioData.enviado = false; 
+    }
 
-    try {
-        const method = id ? 'PUT' : 'POST';
-        const url = `${backendUrl}/api/negocios`;
+    try {
+        // FORZAMOS EL MÉTODO A PUT, ya que el backend solo tiene app.put('/api/negocios')
+        const method = 'PUT'; 
+        const url = `${backendUrl}/api/negocios`;
 
-        const response = await fetch(url, {
-            method: method, // Usar 'POST' o 'PUT' dinámicamente
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(negocioData)
-        });
-        
-        if (!response.ok) {
-            throw new Error('Error al guardar el negocio');
-        }
+        const response = await fetch(url, {
+            method: method, 
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(negocioData)
+        });
+        
+        if (!response.ok) {
+            // Si hay un error, intentamos obtener más detalles del backend
+            const errorData = await response.json().catch(() => ({ error: 'Error desconocido del servidor' }));
+            throw new Error(`Error: ${response.status} - ${errorData.error || response.statusText}`);
+        }
 
-        const data = await response.json();
-        console.log(data.message);
-        await fetchDataAndInitialize(); // Recargar datos del servidor
-        cerrarModal();
-    } catch (error) {
-        console.error('Error al guardar el negocio:', error);
-        alert('Hubo un error al guardar el negocio. Inténtalo de nuevo.');
-    }
+        const data = await response.json();
+        console.log(data.message);
+        await fetchDataAndInitialize(); // Recargar datos del servidor
+        cerrarModal();
+    } catch (error) {
+        console.error('Error al guardar el negocio:', error);
+        alert(`Hubo un error al guardar el negocio. Inténtalo de nuevo. Detalle: ${error.message}`);
+    }
 }
-
 
 async function eliminarNegocio(id) {
     if (confirm('¿Estás seguro de que quieres eliminar este negocio?')) {
