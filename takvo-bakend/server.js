@@ -2,7 +2,9 @@ const express = require('express');
 const { Client } = require('pg');
 const cors = require('cors');
 
-// Configuración del cliente PostgreSQL (Asegúrate de que tus variables de entorno estén configuradas)
+// ==============================================
+// CONFIGURACIÓN DE CONEXIÓN (MANTÉN ESTO ARRIBA)
+// ==============================================
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
@@ -27,16 +29,30 @@ app.get('/', (req, res) => {
 });
 
 // ==============================================
-// RUTAS API
+// RUTAS API ESTABLES
 // ==============================================
 
-// API 1: Obtener todos los datos (REVERTIDO a SELECT * para simplificar)
+// API 1: Obtener todos los datos (Usando query EXPLÍCITA y ESTABLE)
 app.get('/api/datos', async (req, res) => {
     try {
-        // Usamos SELECT * ya que es más seguro después de reversiones de columnas
-        const negociosResult = await client.query('SELECT * FROM negocios');
+        // Seleccionamos SÓLO las columnas que sabemos que existen y son necesarias.
+        const negociosQuery = `
+            SELECT 
+                id, 
+                nombre, 
+                telefono, 
+                rubro_id, 
+                enviado, 
+                pais_id, 
+                provincia_id, 
+                ciudad_id,
+                recontacto_contador,
+                ultima_fecha_contacto
+            FROM negocios;
+        `;
+        const negociosResult = await client.query(negociosQuery);
         
-        // El resto de queries no necesitan cambios
+        // El resto de queries permanece igual
         const paisesResult = await client.query('SELECT * FROM paises');
         const provinciasResult = await client.query('SELECT * FROM provincias');
         const ciudadesResult = await client.query('SELECT * FROM ciudades');
@@ -65,12 +81,12 @@ app.get('/api/datos', async (req, res) => {
 });
 
 
-// API 2: Actualizar o crear un negocio (CORREGIDA la inserción)
+// API 2: Actualizar o crear un negocio (INSERCIÓN CORREGIDA)
 app.put('/api/negocios', async (req, res) => {
     const { id, nombre, telefono, rubro_id, enviado, pais_id, provincia_id, ciudad_id } = req.body;
     try {
         if (id) {
-            // Edición (UPDATE): Solo se actualizan los campos básicos
+            // Edición (UPDATE)
             const updateQuery = `
                 UPDATE negocios
                 SET nombre = $1, telefono = $2, rubro_id = $3, enviado = $4, pais_id = $5, provincia_id = $6, ciudad_id = $7
@@ -79,7 +95,7 @@ app.put('/api/negocios', async (req, res) => {
             await client.query(updateQuery, [nombre, telefono, rubro_id, enviado, pais_id, provincia_id, ciudad_id, id]);
             res.status(200).json({ message: 'Negocio actualizado con éxito' });
         } else {
-            // Creación (INSERT): Se debe especificar valores iniciales para recontacto_contador y ultima_fecha_contacto
+            // Creación (INSERT): Incluye recontacto_contador y ultima_fecha_contacto con valores iniciales
             const insertQuery = `
                 INSERT INTO negocios(
                     nombre, 
@@ -94,8 +110,8 @@ app.put('/api/negocios', async (req, res) => {
                 ) 
                 VALUES(
                     $1, $2, $3, $4, $5, $6, $7, 
-                    0,                            -- recontacto_contador inicializado en 0
-                    NULL                          -- ultima_fecha_contacto inicializado en NULL
+                    0,                            
+                    NULL                         
                 )
                 RETURNING id
             `;
@@ -187,7 +203,9 @@ app.get('/api/negocios/historial/:id', async (req, res) => {
 });
 
 
-// Inicio del servidor
+// ==============================================
+// INICIO DEL SERVIDOR
+// ==============================================
 app.listen(PORT, () => {
     console.log(`Servidor backend corriendo en el puerto ${PORT}`);
 });
