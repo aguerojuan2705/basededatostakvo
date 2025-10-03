@@ -139,6 +139,7 @@ app.delete('/api/negocios/:id', async (req, res) => {
 
 
 // API 4: Registrar un nuevo recontacto
+// RUTA PARA REGISTRAR UN NUEVO CONTACTO
 app.post('/api/negocios/registrar-contacto', async (req, res) => {
     // Extrae los datos del cuerpo de la petición.
     const { id, medio, notas } = req.body; 
@@ -150,22 +151,20 @@ app.post('/api/negocios/registrar-contacto', async (req, res) => {
 
     let client;
     try {
-        // Asumiendo que tu cliente de conexión a DB se llama 'client' (como en el código completo que te envié)
-        // Si usas un pool de conexiones, reemplaza 'client' por 'pool.connect()' y 'client.release()'
-        
-        // --- COMIENZA LA TRANSACCIÓN ---
-        await client.query('BEGIN'); 
+        client = await pool.connect();
+        await client.query('BEGIN'); // Iniciar transacción
 
-        // 1. Insertar el registro en la tabla 'historial_interacciones' (Tu nombre de tabla)
+        // 1. Insertar el registro en la tabla 'historial_contactos'
         const insertHistoryQuery = `
-            INSERT INTO historial_interacciones (negocio_id, fecha_interaccion, medio, notas)
+            INSERT INTO historial_contactos (negocio_id, fecha_interaccion, medio, notas)
             VALUES ($1, NOW(), $2, $3)
             RETURNING *;
         `;
         await client.query(insertHistoryQuery, [id, medio, notas]);
 
         // 2. Actualizar el negocio principal en la tabla 'negocios'
-        // Esto incrementa el contador y actualiza la fecha.
+        //    - COALESCE(recontacto_contador, 0) + 1: Garantiza que si el contador es NULL, empiece en 0 y luego se incremente.
+        //    - ultima_fecha_contacto = NOW(): Utiliza la función de fecha y hora de PostgreSQL.
         const updateBusinessQuery = `
             UPDATE negocios
             SET 
@@ -193,17 +192,17 @@ app.post('/api/negocios/registrar-contacto', async (req, res) => {
             await client.query('ROLLBACK'); // Deshacer en caso de error
         }
         console.error('Error al registrar contacto en el servidor:', error);
-        
-        // Devolver un error específico para ayudarte a depurar si falla de nuevo
+        // Devolver un error específico al frontend
         res.status(500).json({ 
             error: 'Error al procesar la solicitud de recontacto.', 
             details: error.message 
         });
-    } 
-    // NOTA: Si usas 'pool.connect()', necesitas un bloque 'finally' para 'client.release()'. 
-    // Si usas el cliente único, como en el código completo, este bloque final no es necesario.
+    } finally {
+        if (client) {
+            client.release();
+        }
+    }
 });
-
 
 // API 5: Obtener historial de un negocio
 app.get('/api/negocios/historial/:id', async (req, res) => {
