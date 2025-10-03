@@ -145,6 +145,25 @@ app.post('/api/negocios/registrar-contacto', async (req, res) => {
     }
 });
 
+// API 5: Obtener historial de interacciones
+app.get('/api/negocios/historial/:id', async (req, res) => {
+    const contactoId = req.params.id;
+    try {
+        const query = `
+            SELECT fecha_interaccion, medio, notas 
+            FROM historial_interacciones 
+            WHERE contacto_id = $1 
+            ORDER BY fecha_interaccion DESC;
+        `;
+        const result = await client.query(query, [contactoId]);
+        
+        res.status(200).json({ historial: result.rows });
+    } catch (error) {
+        console.error('Error al obtener el historial:', error);
+        res.status(500).json({ error: 'Error del servidor al obtener historial' });
+    }
+});
+
 // Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);

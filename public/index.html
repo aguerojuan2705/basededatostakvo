@@ -94,19 +94,24 @@
 
     <div class="table-container">
       <table id="tabla-negocios">
-        <thead class="table-header">
-          <tr>
-            <th class="sortable" data-sort="nombre">Nombre <i class="fas fa-sort"></i></th>
-            <th class="sortable" data-sort="telefono">Teléfono <i class="fas fa-sort"></i></th>
-            <th class="sortable" data-sort="rubro">Rubro <i class="fas fa-sort"></i></th>
-            <th class="sortable" data-sort="ciudad">Ciudad <i class="fas fa-sort"></i></th>
-            <th class="sortable" data-sort="provincia">Provincia <i class="fas fa-sort"></i></th>
-            <th>Mensaje Enviado</th> <th>Acciones</th>
-          </tr>
+        <thead>
+            <tr>
+                <th class="sortable" data-sort="nombre">Nombre</th>
+                <th class="sortable" data-sort="telefono">Teléfono</th>
+                <th class="sortable" data-sort="rubro">Rubro</th>
+                <th class="sortable" data-sort="ciudad">Ciudad</th>
+                <th class="sortable" data-sort="provincia">Provincia</th>
+                <th class="sortable" data-sort="pais">Pais</th>
+                <th class="sortable" data-sort="recontactos">Recontactos</th>
+                <th class="sortable" data-sort="contacto">Último Contacto</th>
+                
+                <th>Enviado</th>
+                <th>Acciones</th>
+            </tr>
         </thead>
         <tbody>
-          </tbody>
-      </table>
+            </tbody>
+    </table>
     </div>
 
 
@@ -146,6 +151,7 @@
             <option value="santa_fe">Santa Fe</option>
           </select>
         </div>
+
 
 
         <div class="form-group">
@@ -199,6 +205,47 @@
     </div>
   </div>
 
+  <div id="contact-modal" class="modal">
+    <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+            <h2 id="contact-modal-title">Historial de Contacto con <span id="contact-business-name"></span></h2>
+            <span class="close" id="contact-modal-close">&times;</span>
+        </div>
+        
+        <div class="historial-container">
+            <h3>Historial de Interacciones</h3>
+            <ul id="contact-history-list">
+                <li>No hay interacciones registradas.</li>
+            </ul>
+        </div>
+
+        <hr style="margin: 20px 0;">
+
+        <form id="register-contact-form">
+            <input type="hidden" id="contact-business-id">
+            <h3>Registrar Nuevo Contacto</h3>
+            
+            <div class="form-group">
+                <label for="contact-medio">Medio de Contacto:</label>
+                <select id="contact-medio" required>
+                    <option value="">Seleccionar</option>
+                    <option value="Llamada">Llamada</option>
+                    <option value="WhatsApp">WhatsApp</option>
+                    <option value="Email">Email</option>
+                    <option value="Reunión">Reunión</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="contact-notas">Notas (Máx. 250 caracteres):</label>
+                <textarea id="contact-notas" rows="3" maxlength="250" required></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-add">Guardar Contacto</button>
+        </form>
+    </div>
+</div>
 
   <script src="scripts.js"></script>
 </body>

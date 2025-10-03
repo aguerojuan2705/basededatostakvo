@@ -36,22 +36,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Configurar modal
+    // Configurar modal de Agregar/Editar Negocio
     document.getElementById('btn-add-business').addEventListener('click', abrirModal);
     document.querySelector('.close').addEventListener('click', cerrarModal);
     document.getElementById('business-form').addEventListener('submit', guardarNegocio);
+    document.getElementById('modal-provincia').addEventListener('change', function() {
+        cargarCiudadesModal(this.value);
+    });
 
-    // Cerrar modal al hacer clic fuera
+    // Configurar modal de Contacto/Historial
+    document.getElementById('contact-modal-close').addEventListener('click', () => {
+        document.getElementById('contact-modal').style.display = 'none';
+    });
+    document.getElementById('register-contact-form').addEventListener('submit', guardarNuevoContacto);
+
+
+    // Cerrar modales al hacer clic fuera
     window.addEventListener('click', (e) => {
         if (e.target === document.getElementById('business-modal')) {
             cerrarModal();
         }
+        if (e.target === document.getElementById('contact-modal')) {
+            document.getElementById('contact-modal').style.display = 'none';
+        }
     });
 
-    // Event listeners para los selectores del modal
-    document.getElementById('modal-provincia').addEventListener('change', function() {
-        cargarCiudadesModal(this.value);
-    });
 });
 
 async function fetchDataAndInitialize() {
@@ -63,11 +72,12 @@ async function fetchDataAndInitialize() {
         const serverData = await response.json();
         negocios = serverData.negocios;
         datos.paises = serverData.paises;
+        datos.rubros = serverData.rubros; // Asegurarse de tener los rubros si se usan en los selectores
         inicializarSelectores();
         cargarTablaNegocios(negocios);
     } catch (error) {
         console.error('Error al cargar datos desde el servidor:', error);
-        alert('No se pudo conectar con el servidor. Se cargará una vista vacía.');
+        alert('No se pudo conectar con el servidor o la base de datos. Se cargará una vista vacía.');
     }
 }
 
@@ -75,15 +85,27 @@ async function fetchDataAndInitialize() {
 function inicializarSelectores() {
     const selectPais = document.getElementById('pais');
     const selectModalPais = document.getElementById('modal-pais');
+    const selectRubro = document.getElementById('rubro');
+    const selectModalRubro = document.getElementById('modal-rubro');
 
     // Limpiar selectores antes de cargar
     selectPais.innerHTML = '<option value="">Seleccionar país</option>';
     selectModalPais.innerHTML = '<option value="">Seleccionar país</option>';
+    selectRubro.innerHTML = '<option value="">Seleccionar rubro</option>';
+    selectModalRubro.innerHTML = '<option value="">Seleccionar rubro</option>';
 
     datos.paises.forEach(pais => {
         selectPais.innerHTML += `<option value="${pais.id}">${pais.nombre}</option>`;
         selectModalPais.innerHTML += `<option value="${pais.id}">${pais.nombre}</option>`;
     });
+
+    // Cargar rubros (asumiendo que vienen en datos.rubros)
+    if (datos.rubros) {
+        datos.rubros.forEach(rubro => {
+            selectRubro.innerHTML += `<option value="${rubro.id}">${rubro.nombre}</option>`;
+            selectModalRubro.innerHTML += `<option value="${rubro.id}">${rubro.nombre}</option>`;
+        });
+    }
 
     // Cargar Argentina por defecto en ambos selectores
     document.getElementById('pais').value = 'argentina';
@@ -181,7 +203,7 @@ function cargarTablaNegocios(listaNegocios) {
     tbody.innerHTML = '';
 
     if (listaNegocios.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No hay negocios registrados</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align: center;">No hay negocios registrados</td></tr>';
         return;
     }
 
@@ -199,39 +221,41 @@ function cargarTablaNegocios(listaNegocios) {
 
         // Formato para la fecha
         const ultimaFecha = negocio.ultima_fecha_contacto 
-            ? new Date(negocio.ultima_fecha_contacto).toLocaleDateString('es-AR') // Ajusta el formato de fecha a tu gusto
+            ? new Date(negocio.ultima_fecha_contacto).toLocaleDateString('es-AR')
             : 'Nunca';
 
         const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${negocio.nombre}</td>
-            <td>
-                <a href="https://wa.me/${negocio.telefono.replace(/[\s-]/g, '')}" class="no-link-style" target="_blank" rel="noopener noreferrer">
-                    ${negocio.telefono}
-                </a>
-            </td>
-            <td>${capitalizeFirstLetter(negocio.rubro_id)}</td>
-            <td>${ciudad ? ciudad.nombre : 'N/A'}</td>
-            <td>${provincia ? provincia.nombre : 'N/A'}</td>
+        // NOTA: EL ORDEN DE LAS COLUMNAS AQUÍ DEBE COINCIDIR CON EL <thead> EN TU HTML (9 columnas)
+        tr.innerHTML = `
+            <td>${negocio.nombre}</td>
+            <td>
+                <a href="https://wa.me/${negocio.telefono.replace(/[\s-]/g, '')}" class="no-link-style" target="_blank" rel="noopener noreferrer">
+                    ${negocio.telefono}
+                </a>
+            </td>
+            <td>${capitalizeFirstLetter(negocio.rubro_id)}</td>
+            <td>${ciudad ? ciudad.nombre : 'N/A'}</td>
+            <td>${provincia ? provincia.nombre : 'N/A'}</td>
+            <td>${pais ? pais.nombre : 'N/A'}</td> 
             
             <td>${negocio.recontacto_contador || 0}</td> 
             <td>${ultimaFecha}</td> 
-                        <td class="status-cell">
-                <button class="status-btn" data-id="${negocio.id}">
-                    <i class="fas fa-check" style="color: ${negocio.enviado ? 'green' : '#ccc'};"></i>
-                </button>
-            </td>
-            <td class="actions">
+                        <td class="status-cell">
+                <button class="status-btn" data-id="${negocio.id}">
+                    <i class="fas fa-check" style="color: ${negocio.enviado ? 'green' : '#ccc'};"></i>
+                </button>
+            </td>
+            <td class="actions">
                 <button class="action-btn contact-btn" data-id="${negocio.id}" title="Registrar Recontacto">
                     <i class="fas fa-phone-alt"></i> 
                 </button>
-                                <button class="action-btn edit-btn" data-id="${negocio.id}"><i class="fas fa-edit"></i></button>
-                <button class="action-btn delete-btn" data-id="${negocio.id}"><i class="fas fa-trash"></i></button>
-            </td>
-        `;
+                <button class="action-btn edit-btn" data-id="${negocio.id}"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete-btn" data-id="${negocio.id}"><i class="fas fa-trash"></i></button>
+            </td>
+        `;
 
-        tbody.appendChild(tr);
-    });
+        tbody.appendChild(tr);
+    });
 
     // Agregar event listeners a los botones de acción
     document.querySelectorAll('.edit-btn').forEach(btn => {
@@ -251,13 +275,14 @@ function cargarTablaNegocios(listaNegocios) {
             toggleStatus(btn.dataset.id);
         });
     });
-    // Agregar event listeners al nuevo botón de Recontacto
+    
+    // **ACTUALIZADO**: Listener para el nuevo Modal de Contacto
     document.querySelectorAll('.contact-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            registrarContacto(btn.dataset.id);
+            abrirModalContacto(btn.dataset.id); // Llama a la nueva función
         });
     });
-    
+
     actualizarEstadisticas();
 }
 
@@ -334,17 +359,22 @@ function ordenarTabla(column) {
 
 
 function getColumnIndex(column) {
+    // 1: Nombre, 2: Teléfono, 3: Rubro, 4: Ciudad, 5: Provincia, 6: País, 7: Recontactos, 8: Último Contacto, 9: Enviado, 10: Acciones
+    // Nota: Las columnas de la tabla son 10 ahora, pero los datos de ordenamiento son menos.
     const headers = {
         'nombre': 1,
         'telefono': 2,
         'rubro': 3,
         'ciudad': 4,
-        'provincia': 5
+        'provincia': 5,
+        'pais': 6,
+        'recontactos': 7,
+        'contacto': 8
     };
     return headers[column] || 1;
 }
 
-// Funciones para el modal
+// Funciones para el modal de Negocios
 function abrirModal() {
     document.getElementById('modal-title').textContent = 'Agregar Nuevo Negocio';
     document.getElementById('business-form').reset();
@@ -422,7 +452,7 @@ async function guardarNegocio(e) {
         const url = `${backendUrl}/api/negocios`;
 
         const response = await fetch(url, {
-            method: 'PUT',
+            method: method, // Usar 'POST' o 'PUT' dinámicamente
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -466,16 +496,72 @@ async function eliminarNegocio(id) {
 }
 
 // *****************************************************************
-// Función para registrar un contacto (Llamada al Backend API 4)
+// Funciones de Soporte para el Modal de Contacto (Historial y Registro)
 // *****************************************************************
-async function registrarContacto(id) {
-    // Nota: Por ahora, solo pedimos el medio y las notas con un 'prompt'.
-    // Idealmente, se usaría un modal más elaborado.
-    const medio = prompt("Ingrese el medio de contacto (Ej: Llamada, WhatsApp, Email):");
-    if (!medio) return; // Cancelado
 
-    const notas = prompt("Ingrese una nota breve sobre el contacto:");
-    if (!notas) return; // Cancelado
+async function fetchHistorial(contactoId) {
+    try {
+        const response = await fetch(`${backendUrl}/api/negocios/historial/${contactoId}`);
+        if (!response.ok) {
+            // Manejar 404/204 si la ruta no existe o no hay datos, pero no es un error fatal
+            if (response.status === 404 || response.status === 204) {
+                 return [];
+            }
+            throw new Error('Error al obtener el historial');
+        }
+        const data = await response.json();
+        // Asumiendo que el backend devuelve { historial: [...] }
+        return data.historial || [];
+    } catch (error) {
+        console.error('Error al cargar historial:', error);
+        return [];
+    }
+}
+
+async function abrirModalContacto(id) {
+    const negocio = negocios.find(n => n.id == id);
+    if (!negocio) return;
+
+    // 1. Configurar datos básicos
+    document.getElementById('contact-business-id').value = id;
+    document.getElementById('contact-business-name').textContent = negocio.nombre;
+    document.getElementById('register-contact-form').reset(); // Limpiar formulario
+
+    // 2. Obtener y mostrar el historial
+    const historyList = document.getElementById('contact-history-list');
+    historyList.innerHTML = '<li>Cargando historial...</li>';
+    
+    const historial = await fetchHistorial(id); 
+
+    historyList.innerHTML = '';
+    if (historial.length === 0) {
+        historyList.innerHTML = '<li>No hay interacciones registradas.</li>';
+    } else {
+        historial.forEach(item => {
+            // Muestra la fecha y hora de la interacción
+            const fecha = new Date(item.fecha_interaccion).toLocaleDateString('es-AR', { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+            historyList.innerHTML += `
+                <li>
+                    <strong>${fecha} (${item.medio}):</strong> ${item.notas}
+                </li>`;
+        });
+    }
+
+    // 3. Abrir modal
+    document.getElementById('contact-modal').style.display = 'flex';
+}
+
+async function guardarNuevoContacto(e) {
+    e.preventDefault();
+
+    const id = document.getElementById('contact-business-id').value;
+    const medio = document.getElementById('contact-medio').value;
+    const notas = document.getElementById('contact-notas').value;
+
+    if (!medio || !notas) {
+        alert('Por favor, selecciona un medio e ingresa una nota.');
+        return;
+    }
 
     const negocioData = {
         id: parseInt(id),
@@ -485,27 +571,25 @@ async function registrarContacto(id) {
 
     try {
         const url = `${backendUrl}/api/negocios/registrar-contacto`;
-
         const response = await fetch(url, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(negocioData)
         });
         
         if (!response.ok) {
-            // Lee el error del backend si está disponible
             const errorData = await response.json(); 
-            throw new Error(`Error al registrar el contacto: ${errorData.error || response.statusText}`);
+            throw new Error(`Error: ${errorData.error || response.statusText}`);
         }
 
-        alert('¡Recontacto registrado con éxito! El contador ha sido actualizado.');
-        await fetchDataAndInitialize(); // Recargar datos para ver el contador y fecha actualizados
-
+        // Éxito:
+        document.getElementById('contact-modal').style.display = 'none'; // Cerrar modal
+        alert('¡Recontacto registrado con éxito!');
+        await fetchDataAndInitialize(); // Recargar datos de la tabla principal
+        
     } catch (error) {
         console.error('Error al registrar el recontacto:', error);
-        alert(`Hubo un error al registrar el contacto. Inténtalo de nuevo. Detalle: ${error.message}`);
+        alert(`Hubo un error. Detalle: ${error.message}`);
     }
 }
 
