@@ -108,6 +108,43 @@ app.delete('/api/negocios/:id', async (req, res) => {
   }
 });
 
+// API 4: Registrar un Recontacto y actualizar el contador
+app.post('/api/negocios/registrar-contacto', async (req, res) => {
+    // 1. Obtener los datos del cuerpo de la solicitud
+    const { id, medio, notas } = req.body; 
+
+    // Validación básica
+    if (!id || !medio || !notas) {
+        return res.status(400).json({ 
+            message: 'Faltan parámetros requeridos (id, medio, notas).' 
+        });
+    }
+
+    try {
+        // 2. Ejecutar la función de base de datos (RPC) usando SELECT
+        // Usamos el comando SQL SELECT para llamar a la función de PostgreSQL
+        const rpcQuery = `
+            SELECT registrar_recontacto($1, $2, $3);
+        `;
+        
+        // Los parámetros son: $1 = contacto_id, $2 = medio, $3 = notas
+        await client.query(rpcQuery, [id, medio, notas]);
+
+        // Si la consulta no falla, el recontacto se registró y el contador se actualizó
+        res.status(200).json({ 
+            message: 'Recontacto registrado y contador actualizado con éxito.' 
+        });
+
+    } catch (error) {
+        console.error('Error al registrar el recontacto mediante RPC:', error);
+        // El error puede ser por ID no encontrado, por ejemplo
+        res.status(500).json({ 
+            error: 'Error del servidor al registrar el contacto. Verifique el ID o la función RPC.',
+            details: error.message // Útil para depuración
+        });
+    }
+});
+
 // Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);

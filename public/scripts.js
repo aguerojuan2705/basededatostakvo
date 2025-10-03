@@ -197,30 +197,41 @@ function cargarTablaNegocios(listaNegocios) {
             }
         }
 
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${negocio.nombre}</td>
-            <td>
-                <a href="https://wa.me/${negocio.telefono.replace(/[\s-]/g, '')}" class="no-link-style" target="_blank" rel="noopener noreferrer">
-                    ${negocio.telefono}
-                </a>
-            </td>
-            <td>${capitalizeFirstLetter(negocio.rubro_id)}</td>
-            <td>${ciudad ? ciudad.nombre : 'N/A'}</td>
-            <td>${provincia ? provincia.nombre : 'N/A'}</td>
-            <td class="status-cell">
-                <button class="status-btn" data-id="${negocio.id}">
-                    <i class="fas fa-check" style="color: ${negocio.enviado ? 'green' : '#ccc'};"></i>
-                </button>
-            </td>
-            <td class="actions">
-                <button class="action-btn edit-btn" data-id="${negocio.id}"><i class="fas fa-edit"></i></button>
-                <button class="action-btn delete-btn" data-id="${negocio.id}"><i class="fas fa-trash"></i></button>
-            </td>
-        `;
+        // Formato para la fecha
+        const ultimaFecha = negocio.ultima_fecha_contacto 
+            ? new Date(negocio.ultima_fecha_contacto).toLocaleDateString('es-AR') // Ajusta el formato de fecha a tu gusto
+            : 'Nunca';
 
-        tbody.appendChild(tr);
-    });
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${negocio.nombre}</td>
+            <td>
+                <a href="https://wa.me/${negocio.telefono.replace(/[\s-]/g, '')}" class="no-link-style" target="_blank" rel="noopener noreferrer">
+                    ${negocio.telefono}
+                </a>
+            </td>
+            <td>${capitalizeFirstLetter(negocio.rubro_id)}</td>
+            <td>${ciudad ? ciudad.nombre : 'N/A'}</td>
+            <td>${provincia ? provincia.nombre : 'N/A'}</td>
+            
+            <td>${negocio.recontacto_contador || 0}</td> 
+            <td>${ultimaFecha}</td> 
+                        <td class="status-cell">
+                <button class="status-btn" data-id="${negocio.id}">
+                    <i class="fas fa-check" style="color: ${negocio.enviado ? 'green' : '#ccc'};"></i>
+                </button>
+            </td>
+            <td class="actions">
+                <button class="action-btn contact-btn" data-id="${negocio.id}" title="Registrar Recontacto">
+                    <i class="fas fa-phone-alt"></i> 
+                </button>
+                                <button class="action-btn edit-btn" data-id="${negocio.id}"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete-btn" data-id="${negocio.id}"><i class="fas fa-trash"></i></button>
+            </td>
+        `;
+
+        tbody.appendChild(tr);
+    });
 
     // Agregar event listeners a los botones de acción
     document.querySelectorAll('.edit-btn').forEach(btn => {
@@ -240,7 +251,13 @@ function cargarTablaNegocios(listaNegocios) {
             toggleStatus(btn.dataset.id);
         });
     });
-
+    // Agregar event listeners al nuevo botón de Recontacto
+    document.querySelectorAll('.contact-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            registrarContacto(btn.dataset.id);
+        });
+    });
+    
     actualizarEstadisticas();
 }
 
@@ -448,6 +465,49 @@ async function eliminarNegocio(id) {
     }
 }
 
+// *****************************************************************
+// Función para registrar un contacto (Llamada al Backend API 4)
+// *****************************************************************
+async function registrarContacto(id) {
+    // Nota: Por ahora, solo pedimos el medio y las notas con un 'prompt'.
+    // Idealmente, se usaría un modal más elaborado.
+    const medio = prompt("Ingrese el medio de contacto (Ej: Llamada, WhatsApp, Email):");
+    if (!medio) return; // Cancelado
+
+    const notas = prompt("Ingrese una nota breve sobre el contacto:");
+    if (!notas) return; // Cancelado
+
+    const negocioData = {
+        id: parseInt(id),
+        medio: medio,
+        notas: notas
+    };
+
+    try {
+        const url = `${backendUrl}/api/negocios/registrar-contacto`;
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(negocioData)
+        });
+        
+        if (!response.ok) {
+            // Lee el error del backend si está disponible
+            const errorData = await response.json(); 
+            throw new Error(`Error al registrar el contacto: ${errorData.error || response.statusText}`);
+        }
+
+        alert('¡Recontacto registrado con éxito! El contador ha sido actualizado.');
+        await fetchDataAndInitialize(); // Recargar datos para ver el contador y fecha actualizados
+
+    } catch (error) {
+        console.error('Error al registrar el recontacto:', error);
+        alert(`Hubo un error al registrar el contacto. Inténtalo de nuevo. Detalle: ${error.message}`);
+    }
+}
 
 // Utilidades
 function capitalizeFirstLetter(string) {
