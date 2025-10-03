@@ -292,6 +292,65 @@ footer {
     color: #777;
 }
 
+/* ------------------------------------------- */
+/* AJUSTES ESPECÍFICOS PARA LAS NUEVAS COLUMNAS */
+/* ------------------------------------------- */
+
+/* Ajuste de anchos para la tabla */
+#tabla-negocios th:nth-child(1),
+#tabla-negocios td:nth-child(1) {
+    /* Nombre del Negocio: Necesita más espacio */
+    width: 20%; 
+    min-width: 150px;
+}
+
+#tabla-negocios th:nth-child(6), /* Columna Recontactos */
+#tabla-negocios td:nth-child(6) {
+    width: 8%;
+    min-width: 80px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#tabla-negocios th:nth-child(7), /* Columna Último Contacto */
+#tabla-negocios td:nth-child(7) {
+    width: 12%;
+    min-width: 100px;
+    font-size: 0.9em; /* Fecha puede ser más pequeña */
+}
+
+/* Columna de Estatus Enviado (ahora la 8va) */
+#tabla-negocios th:nth-child(8), 
+#tabla-negocios td:nth-child(8) {
+    width: 5%;
+    min-width: 50px;
+}
+
+/* Columna de Acciones (ahora la 9na) */
+#tabla-negocios th:nth-child(9),
+#tabla-negocios td:nth-child(9) {
+    width: 25%; /* Le damos suficiente espacio para 3 botones */
+    min-width: 180px;
+    padding: 5px; /* Reducimos el padding interno */
+}
+
+/* Flexbox para los botones de acción para que se mantengan en una línea */
+.actions {
+    display: flex;
+    flex-wrap: nowrap; /* Evita que los botones salten de línea */
+    justify-content: space-evenly; /* Distribuye el espacio entre los botones */
+    gap: 4px; /* Espacio más pequeño entre botones */
+}
+
+/* Nuevo botón de contacto */
+.contact-btn {
+    background: var(--secondary-color); /* Color azul, igual que el tema principal */
+    color: white;
+}
+.contact-btn:hover {
+    background: #2980b9;
+}
+
 @media (max-width: 768px) {
     .container{
         padding: 15px;
@@ -321,6 +380,13 @@ footer {
     }
     .modal-content{
         padding: 20px;
+    }
+    .actions {
+    /* Cambio: forzar a usar el display flex de la regla general */
+    justify-content: space-around; 
+    gap: 5px;
+    /* Aseguramos que la columna de acciones sea compacta */
+    min-width: 120px; 
     }
 }
 
