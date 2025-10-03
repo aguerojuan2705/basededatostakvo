@@ -1,4 +1,4 @@
-// server.js - VERSIÓN COMPLETAMENTE CORREGIDA
+// server.js - VERSIÓN COMPLETAMENTE CORREGIDA (SIN POBLACION)
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 // --- Middleware CRÍTICO ---
-app.use(cors()); // 🔥 IMPORTANTE: Habilita CORS
+app.use(cors());
 app.use(express.json());
 
 // --- Configuración de la Base de Datos ---
@@ -34,7 +34,7 @@ function formatForeignKeyId(idValue) {
 }
 
 // *********************************************************************************
-// API 1: CARGAR TODOS LOS DATOS - CORREGIDA
+// API 1: CARGAR TODOS LOS DATOS - CORREGIDA (SIN POBLACION)
 // *********************************************************************************
 
 app.get('/api/datos', async (req, res) => {
@@ -52,7 +52,7 @@ app.get('/api/datos', async (req, res) => {
 
         // Consultas SEPARADAS para datos geográficos (más confiable)
         const paisesResult = await pool.query('SELECT id, nombre FROM paises;');
-        const provinciasResult = await pool.query('SELECT id, nombre, pais_id, poblacion FROM provincias;');
+        const provinciasResult = await pool.query('SELECT id, nombre, pais_id FROM provincias;'); // SIN POBLACION
         const ciudadesResult = await pool.query('SELECT id, nombre, provincia_id FROM ciudades;');
         const rubrosResult = await pool.query('SELECT id, nombre FROM rubros ORDER BY nombre ASC;');
 
@@ -248,7 +248,6 @@ app.post('/api/negocios/registrar-contacto', async (req, res) => {
     try {
         await pool.query('BEGIN');
 
-        // 🔥 CORRECCIÓN: Usar negocios_id en lugar de negocio_id
         const insertHistorialQuery = `
             INSERT INTO historial_interacciones (negocios_id, fecha_interaccion, medio, notas)
             VALUES ($1, NOW(), $2, $3);
@@ -285,7 +284,6 @@ app.get('/api/negocios/historial/:id', async (req, res) => {
     console.log('📋 Solicitando historial para negocio:', id);
     
     try {
-        // 🔥 CORRECCIÓN: Usar negocios_id en lugar de negocio_id
         const query = `
             SELECT fecha_interaccion, medio, notas 
             FROM historial_interacciones 
