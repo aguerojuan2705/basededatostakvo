@@ -115,9 +115,13 @@ table {
 }
 
 th, td {
-    padding: 12px 15px;
+    padding: 10px 12px; /* Reducimos un poco el padding */
     text-align: left;
     border-bottom: 1px solid #ddd;
+    /* Añadimos overflow para manejar contenido largo si es necesario */
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 thead th {
