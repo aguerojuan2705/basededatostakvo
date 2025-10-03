@@ -227,13 +227,7 @@ function cargarTablaNegocios(listaNegocios) {
         const tr = document.createElement('tr');
         // NOTA: EL ORDEN DE LAS COLUMNAS AQUÍ DEBE COINCIDIR CON EL <thead> EN TU HTML (9 columnas)
         tr.innerHTML = `
-            <td>
-                <span style="font-weight: 600;">${negocio.nombre}</span>
-                <div class="social-links">
-                    ${negocio.gmaps_url ? `<a href="${negocio.gmaps_url}" target="_blank" title="Ver en Google Maps"><i class="fas fa-map-marked-alt social-icon gmaps-icon"></i></a>` : ''}
-                    ${negocio.instagram ? `<a href="https://www.instagram.com/${negocio.instagram.replace('@', '')}" target="_blank" title="Ver Instagram"><i class="fab fa-instagram social-icon instagram-icon"></i></a>` : ''}
-                </div>
-            </td>
+            <td>${negocio.nombre}</td>
             <td>
                 <a href="https://wa.me/${negocio.telefono.replace(/[\s-]/g, '')}" class="no-link-style" target="_blank" rel="noopener noreferrer">
                     ${negocio.telefono}

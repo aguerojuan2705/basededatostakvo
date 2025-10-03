@@ -35,23 +35,7 @@ client.connect()
 // API 1: Obtener todos los datos
 app.get('/api/datos', async (req, res) => {
   try {
-    const negociosQuery = `
-        SELECT 
-            id, 
-            nombre, 
-            telefono, 
-            rubro_id, 
-            enviado, 
-            pais_id, 
-            provincia_id, 
-            ciudad_id, 
-            recontacto_contador, 
-            ultima_fecha_contacto,
-            gmaps_url,          
-            instagram       
-        FROM negocios
-    `;
-    const negociosResult = await client.query(negociosQuery);
+    const negociosResult = await client.query('SELECT * FROM negocios');
     
     const paisesResult = await client.query('SELECT * FROM paises');
     const provinciasResult = await client.query('SELECT * FROM provincias');
