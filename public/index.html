@@ -3,250 +3,1039 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Base de Datos Grupo Takvo</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <title>CRM Negocios Takvo</title>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carga de Font Awesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* Estilos personalizados para la estética */
+        :root {
+            --primary-color: #3b82f6; /* Tailwind blue-500 */
+            --secondary-color: #f59e0b; /* Tailwind amber-500 */
+            --danger-color: #ef4444; /* Tailwind red-500 */
+        }
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        /* Estilo general de botón */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+
+        /* Estilo para la tabla */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        }
+
+        th {
+            cursor: pointer;
+            padding: 0.75rem 1.5rem;
+            background-color: #e5e7eb;
+            user-select: none;
+            text-align: left;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #1f2937;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        td {
+            padding: 0.75rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            white-space: nowrap;
+        }
+
+        tr:hover {
+            background-color: #f9fafb;
+        }
+
+        /* Estilos de Modales */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none; /* Oculto por defecto */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Botones de acción en la tabla */
+        .action-btn {
+            margin: 0 0.25rem;
+            padding: 0.4rem 0.5rem;
+            border-radius: 0.375rem;
+            background-color: #e5e7eb;
+            color: #1f2937;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .action-btn:hover {
+            background-color: #d1d5db;
+        }
+
+        .contact-btn { color: var(--secondary-color); }
+        .edit-btn { color: var(--primary-color); }
+        .delete-btn { color: var(--danger-color); }
+        .status-cell { text-align: center; }
+        .no-link-style { text-decoration: none; color: inherit; }
+
+        /* Estilos para el modal de contacto */
+        #contact-history-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 1rem;
+        }
+
+        #contact-history-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        
+    </style>
 </head>
-<body>
-  <div class="container">
-    <header>
-      <h1>Base de Datos Grupo Takvo</h1>
-      <p>Sistema de gestión de negocios por ubicación y rubro</p>
+<body class="p-4 sm:p-8">
+
+    <!-- Encabezado y Estadísticas -->
+    <header class="mb-8">
+        <h1 class="text-4xl font-extrabold text-gray-800 mb-2">CRM Takvo</h1>
+        <p class="text-gray-600 mb-6">Gestión de Negocios y Seguimiento de Contacto</p>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white p-4 rounded-lg shadow-md border-t-4 border-blue-500">
+                <p class="text-sm font-medium text-gray-500">Total Negocios</p>
+                <p id="total-negocios" class="text-2xl font-bold text-gray-900">0</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-md border-t-4 border-amber-500">
+                <p class="text-sm font-medium text-gray-500">Países Únicos</p>
+                <p id="total-paises" class="text-2xl font-bold text-gray-900">0</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-md border-t-4 border-green-500 hidden sm:block">
+                <p class="text-sm font-medium text-gray-500">Provincias</p>
+                <p id="total-provincias" class="text-2xl font-bold text-gray-900">0</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow-md border-t-4 border-red-500 hidden sm:block">
+                <p class="text-sm font-medium text-gray-500">Ciudades</p>
+                <p id="total-ciudades" class="text-2xl font-bold text-gray-900">0</p>
+            </div>
+        </div>
     </header>
 
+    <!-- Filtros y Acciones -->
+    <div class="bg-white p-6 rounded-xl shadow-lg mb-8">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-4 mb-4">
+            <div class="flex-grow">
+                <label for="busqueda" class="block text-sm font-medium text-gray-700 mb-1">Buscar por Nombre:</label>
+                <input type="text" id="busqueda" placeholder="Ej: Concesionaria Martínez" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+            </div>
+            <button id="btn-add-business" class="btn btn-primary whitespace-nowrap flex items-center justify-center">
+                <i class="fas fa-plus mr-2"></i> Agregar Negocio
+            </button>
+        </div>
 
-    <div class="stats">
-      <div class="stat-item">
-        <div class="stat-value" id="total-paises">1</div>
-        <div class="stat-label">Países</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value" id="total-provincias">24</div>
-        <div class="stat-label">Provincias</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value" id="total-ciudades">135</div>
-        <div class="stat-label">Ciudades</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value" id="total-negocios">10</div>
-        <div class="stat-label">Negocios</div>
-      </div>
+        <!-- Selectores de Filtro -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div>
+                <label for="pais" class="block text-sm font-medium text-gray-700 mb-1">País:</label>
+                <select id="pais" class="w-full p-2 border border-gray-300 rounded-lg"></select>
+            </div>
+            <div>
+                <label for="provincia" class="block text-sm font-medium text-gray-700 mb-1">Provincia:</label>
+                <select id="provincia" class="w-full p-2 border border-gray-300 rounded-lg"></select>
+            </div>
+            <div>
+                <label for="ciudad" class="block text-sm font-medium text-gray-700 mb-1">Ciudad:</label>
+                <select id="ciudad" class="w-full p-2 border border-gray-300 rounded-lg"></select>
+            </div>
+            <div>
+                <label for="rubro" class="block text-sm font-medium text-gray-700 mb-1">Rubro:</label>
+                <select id="rubro" class="w-full p-2 border border-gray-300 rounded-lg"></select>
+            </div>
+        </div>
     </div>
 
-
-    <div class="filters">
-      <div class="filter-group">
-        <label for="pais">País</label>
-        <select id="pais">
-          <option value="">Seleccionar país</option>
-        </select>
-      </div>
-
-
-      <div class="filter-group">
-        <label for="provincia">Provincia</label>
-        <select id="provincia">
-          <option value="">Seleccionar provincia</option>
-        </select>
-      </div>
-
-
-      <div class="filter-group">
-        <label for="ciudad">Ciudad</label>
-        <select id="ciudad">
-          <option value="">Seleccionar ciudad</option>
-        </select>
-      </div>
-
-
-      <div class="filter-group">
-        <label for="rubro">Área de Negocio</label>
-        <select id="rubro">
-          <option value="">Seleccionar área</option>
-          <option value="concesionaria">Concesionaria</option>
-          <option value="restaurante">Restaurante</option>
-          <option value="farmacia">Farmacia</option>
-          <option value="hotel">Hotel</option>
-          <option value="tienda">Tienda</option>
-          <option value="centro">Centro Medico</option>
-        </select>
-      </div>
-
-
-      <div class="filter-group">
-        <label for="busqueda">Buscar negocio</label>
-        <input type="text" id="busqueda" placeholder="Nombre del negocio">
-      </div>
-
-
-      <div class="filter-group" style="justify-content: flex-end;">
-        <button class="btn btn-add" id="btn-add-business">
-          <i class="fas fa-plus"></i> Agregar Negocio
-        </button>
-      </div>
-    </div>
-
-
-    <div class="table-container">
-      <table id="tabla-negocios">
-        <thead>
-            <tr>
-                <th class="sortable" data-sort="nombre">Nombre</th>
-                <th class="sortable" data-sort="telefono">Teléfono</th>
-                <th class="sortable" data-sort="rubro">Rubro</th>
-                <th class="sortable" data-sort="ciudad">Ciudad</th>
-                <th class="sortable" data-sort="provincia">Provincia</th>
-                <th class="sortable" data-sort="pais">Pais</th>
-                <th class="sortable" data-sort="recontactos">Recontactos</th>
-                <th class="sortable" data-sort="contacto">Último Contacto</th>
-                
-                <th>Enviado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
+    <!-- Tabla de Negocios -->
+    <div class="table-container bg-white">
+        <table id="tabla-negocios" class="min-w-full divide-y divide-gray-200">
+            <thead>
+                <tr>
+                    <th data-sort="nombre" class="sortable">Nombre</th>
+                    <th data-sort="telefono" class="sortable">Teléfono</th>
+                    <th data-sort="rubro" class="sortable hidden md:table-cell">Rubro</th>
+                    <th data-sort="ciudad" class="sortable hidden md:table-cell">Ciudad</th>
+                    <th data-sort="provincia" class="sortable hidden lg:table-cell">Provincia</th>
+                    <th data-sort="pais" class="sortable hidden lg:table-cell">País</th>
+                    <th data-sort="recontactos" class="sortable text-center">Recontactos</th>
+                    <th data-sort="contacto" class="sortable hidden sm:table-cell">Último Contacto</th>
+                    <th>Enviado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <tr><td colspan="10" class="text-center py-4 text-gray-500">Cargando negocios...</td></tr>
             </tbody>
-    </table>
+        </table>
     </div>
 
+    <!-- Modal de Agregar/Editar Negocio -->
+    <div id="business-modal" class="modal">
+        <div class="modal-content">
+            <div class="flex justify-between items-start mb-4 border-b pb-2">
+                <h2 id="modal-title" class="text-2xl font-bold text-gray-800">Agregar Nuevo Negocio</h2>
+                <span class="close text-gray-500 hover:text-gray-900 text-2xl cursor-pointer">&times;</span>
+            </div>
+            <form id="business-form">
+                <input type="hidden" id="business-id">
+                
+                <div class="mb-4">
+                    <label for="modal-nombre" class="block text-sm font-medium text-gray-700">Nombre del Negocio:</label>
+                    <input type="text" id="modal-nombre" required class="w-full p-2 border border-gray-300 rounded-lg mt-1">
+                </div>
 
-    <footer>
-      <p>Base de Datos Grupo Takvo &copy; 2025 - Sistema de Gestión de Negocios</p>
-    </footer>
-  </div>
+                <div class="mb-4">
+                    <label for="modal-telefono" class="block text-sm font-medium text-gray-700">Teléfono (WhatsApp):</label>
+                    <input type="text" id="modal-telefono" required class="w-full p-2 border border-gray-300 rounded-lg mt-1" placeholder="Ej: +54 9 11 1234 5678">
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="modal-rubro" class="block text-sm font-medium text-gray-700">Rubro:</label>
+                        <select id="modal-rubro" required class="w-full p-2 border border-gray-300 rounded-lg mt-1"></select>
+                    </div>
+                    <div>
+                        <label for="modal-pais" class="block text-sm font-medium text-gray-700">País:</label>
+                        <select id="modal-pais" required class="w-full p-2 border border-gray-300 rounded-lg mt-1"></select>
+                    </div>
+                </div>
 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <div>
+                        <label for="modal-provincia" class="block text-sm font-medium text-gray-700">Provincia:</label>
+                        <select id="modal-provincia" class="w-full p-2 border border-gray-300 rounded-lg mt-1"></select>
+                    </div>
+                    <div>
+                        <label for="modal-ciudad" class="block text-sm font-medium text-gray-700">Ciudad:</label>
+                        <select id="modal-ciudad" class="w-full p-2 border border-gray-300 rounded-lg mt-1"></select>
+                    </div>
+                </div>
 
-  <div class="modal" id="business-modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="modal-title">Agregar Nuevo Negocio</h2>
-        <span class="close">&times;</span>
-      </div>
-
-
-      <form id="business-form">
-        <input type="hidden" id="business-id">
-
-
-        <div class="form-group">
-          <label for="modal-pais">País</label>
-          <select id="modal-pais" required>
-            <option value="">Seleccionar país</option>
-          </select>
+                <button type="submit" class="btn btn-primary w-full">
+                    Guardar Negocio
+                </button>
+            </form>
         </div>
-
-
-        <div class="form-group">
-          <label for="modal-provincia">Provincia</label>
-          <select id="modal-provincia" required>
-            <option value="">Seleccionar provincia</option>
-            <option value="buenos_aires">Buenos Aires</option>
-            <option value="caba">Ciudad Autónoma de Buenos Aires</option>
-            <option value="cordoba">Córdoba</option>
-            <option value="santa_fe">Santa Fe</option>
-          </select>
-        </div>
-
-
-
-        <div class="form-group">
-          <label for="modal-ciudad">Ciudad</label>
-          <select id="modal-ciudad" required>
-            <option value="">Seleccionar ciudad</option>
-            <option value="la_plata">La Plata</option>
-            <option value="mar_del_plata">Mar del Plata</option>
-            <option value="caba">Ciudad de Buenos Aires</option>
-            <option value="rosario">Rosario</option>
-            <option value="cordoba">Córdoba Capital</option>
-          </select>
-        </div>
-
-
-        <div class="form-group">
-          <label for="modal-rubro">Área de Negocio</label>
-          <select id="modal-rubro" required>
-            <option value="">Seleccionar área</option>
-            <option value="abogado">Abogado</option>
-            <option value="academia">Academia</option>
-            <option value="centro-odontologico">Centro Odontologico</option>
-            <option value="clinica">Clinica</option>
-            <option value="concesionaria">Concesionaria</option>
-            <option value="contable">Estudio Contable</option>
-            <option value="politico">Politico</option>
-            <option value="psicologo">Psicologo</option>
-            <option value="restaurante">Restaurante</option>
-            <option value="psicologo">Psicologo</option>
-            <option value="tienda">Tienda</option>
-            <option value="vendedorcursos">Vendedor de Cursos</option>
-            
-          </select>
-        </div>
-
-
-        <div class="form-group">
-          <label for="modal-nombre">Nombre del Negocio</label>
-          <input type="text" id="modal-nombre" required>
-        </div>
-
-
-        <div class="form-group">
-          <label for="modal-telefono">Teléfono de Contacto</label>
-          <input type="text" id="modal-telefono" required>
-        </div>
-
-
-        <button type="submit" class="btn">Guardar Negocio</button>
-      </form>
     </div>
-  </div>
 
-  <div id="contact-modal" class="modal">
-    <div class="modal-content" style="max-width: 600px;">
-        <div class="modal-header">
-            <h2 id="contact-modal-title">Historial de Contacto con <span id="contact-business-name"></span></h2>
-            <span class="close" id="contact-modal-close">&times;</span>
-        </div>
-        
-        <div class="historial-container">
-            <h3>Historial de Interacciones</h3>
-            <ul id="contact-history-list">
-                <li>No hay interacciones registradas.</li>
+    <!-- Modal de Contacto y Historial -->
+    <div id="contact-modal" class="modal">
+        <div class="modal-content max-w-lg">
+            <div class="flex justify-between items-start mb-4 border-b pb-2">
+                <h2 class="text-2xl font-bold text-gray-800">Registrar Contacto para: <span id="contact-business-name" class="text-blue-600"></span></h2>
+                <span id="contact-modal-close" class="text-gray-500 hover:text-gray-900 text-2xl cursor-pointer">&times;</span>
+            </div>
+
+            <!-- Formulario de Registro de Nuevo Contacto -->
+            <form id="register-contact-form" class="mb-6 p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <h3 class="text-lg font-semibold mb-3">Nuevo Recontacto</h3>
+                <input type="hidden" id="contact-business-id">
+                
+                <div class="mb-3">
+                    <label for="contact-medio" class="block text-sm font-medium text-gray-700">Medio de Contacto:</label>
+                    <select id="contact-medio" required class="w-full p-2 border border-gray-300 rounded-lg mt-1">
+                        <option value="">Seleccionar Medio</option>
+                        <option value="Whatsapp">Whatsapp</option>
+                        <option value="Llamada">Llamada</option>
+                        <option value="Email">Email</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="contact-notas" class="block text-sm font-medium text-gray-700">Notas:</label>
+                    <textarea id="contact-notas" rows="3" required class="w-full p-2 border border-gray-300 rounded-lg mt-1" placeholder="Detalles de la conversación..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-full">
+                    Registrar
+                </button>
+            </form>
+
+            <!-- Historial de Contacto -->
+            <h3 class="text-lg font-semibold mb-3 border-b pb-2">Historial de Interacciones</h3>
+            <ul id="contact-history-list" class="max-h-60 overflow-y-auto text-sm text-gray-700">
+                <!-- Se llenará con JavaScript -->
             </ul>
         </div>
-
-        <hr style="margin: 20px 0;">
-
-        <form id="register-contact-form">
-            <input type="hidden" id="contact-business-id">
-            <h3>Registrar Nuevo Contacto</h3>
-            
-            <div class="form-group">
-                <label for="contact-medio">Medio de Contacto:</label>
-                <select id="contact-medio" required>
-                    <option value="">Seleccionar</option>
-                    <option value="Llamada">Llamada</option>
-                    <option value="WhatsApp">WhatsApp</option>
-                    <option value="Email">Email</option>
-                    <option value="Reunión">Reunión</option>
-                    <option value="Otro">Otro</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
-                <label for="contact-notas">Notas (Máx. 250 caracteres):</label>
-                <textarea id="contact-notas" rows="3" maxlength="250" required></textarea>
-            </div>
-            
-            <button type="submit" class="btn btn-add">Guardar Contacto</button>
-        </form>
     </div>
-</div>
+    
+    <!-- Modal de Confirmación de Eliminación (Reemplazo de confirm()) -->
+    <div id="delete-confirm-modal" class="modal">
+        <div class="modal-content max-w-sm text-center">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Confirmar Eliminación</h2>
+            <p id="delete-confirm-message" class="text-gray-700 mb-6">¿Estás seguro de que quieres eliminar este negocio?</p>
+            <div class="flex justify-around space-x-4">
+                <button id="btn-delete-cancel" class="btn bg-gray-300 text-gray-800 hover:bg-gray-400">Cancelar</button>
+                <button id="btn-delete-confirm" class="btn btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
 
-  <script src="scripts.js"></script>
+<script>
+    // Variables globales para los datos y el estado de ordenamiento
+    let negocios = [];
+    const datos = { paises: [] };
+    let currentSort = { column: '', direction: 'asc' };
+    let negocioToDelete = null; // Variable para almacenar el ID a eliminar
+
+    // Define la URL base de tu backend de Render
+    const backendUrl = 'https://basededatostakvo.onrender.com';
+
+    // Inicialización
+    document.addEventListener('DOMContentLoaded', function() {
+        // Cargar datos desde el servidor
+        fetchDataAndInitialize();
+
+        // Configurar event listeners
+        document.getElementById('modal-pais').addEventListener('change', function() {
+            cargarProvinciasModal(this.value);
+        });
+        document.getElementById('pais').addEventListener('change', function() {
+            cargarProvincias(this.value);
+            filtrarNegocios();
+        });
+        document.getElementById('provincia').addEventListener('change', function() {
+            cargarCiudades(this.value);
+            filtrarNegocios();
+        });
+        document.getElementById('ciudad').addEventListener('change', filtrarNegocios);
+        document.getElementById('rubro').addEventListener('change', filtrarNegocios);
+        document.getElementById('busqueda').addEventListener('input', filtrarNegocios);
+
+        // Configurar botones de ordenamiento
+        document.querySelectorAll('.sortable').forEach(header => {
+            header.addEventListener('click', () => {
+                ordenarTabla(header.dataset.sort);
+            });
+        });
+
+        // Configurar modal de Agregar/Editar Negocio
+        document.getElementById('btn-add-business').addEventListener('click', abrirModal);
+        document.querySelector('.close').addEventListener('click', cerrarModal);
+        document.getElementById('business-form').addEventListener('submit', guardarNegocio);
+        document.getElementById('modal-provincia').addEventListener('change', function() {
+            cargarCiudadesModal(this.value);
+        });
+
+        // Configurar modal de Contacto/Historial
+        document.getElementById('contact-modal-close').addEventListener('click', () => {
+            document.getElementById('contact-modal').style.display = 'none';
+        });
+        document.getElementById('register-contact-form').addEventListener('submit', guardarNuevoContacto);
+
+
+        // Configurar modal de Confirmación de Eliminación (Reemplazo de confirm())
+        document.getElementById('btn-delete-cancel').addEventListener('click', () => {
+            document.getElementById('delete-confirm-modal').style.display = 'none';
+        });
+        document.getElementById('btn-delete-confirm').addEventListener('click', () => {
+            document.getElementById('delete-confirm-modal').style.display = 'none';
+            // Llama a la función real de eliminación después de la confirmación
+            _eliminarNegocio(negocioToDelete); 
+        });
+
+        // Cerrar modales al hacer clic fuera
+        window.addEventListener('click', (e) => {
+            if (e.target === document.getElementById('business-modal')) {
+                cerrarModal();
+            }
+            if (e.target === document.getElementById('contact-modal')) {
+                document.getElementById('contact-modal').style.display = 'none';
+            }
+            if (e.target === document.getElementById('delete-confirm-modal')) {
+                document.getElementById('delete-confirm-modal').style.display = 'none';
+            }
+        });
+    });
+
+    async function fetchDataAndInitialize() {
+        try {
+            const response = await fetch(`${backendUrl}/api/datos`);
+            if (!response.ok) {
+                throw new Error('Error en la respuesta del servidor');
+            }
+            const serverData = await response.json();
+            negocios = serverData.negocios;
+            datos.paises = serverData.paises;
+            datos.rubros = serverData.rubros; 
+            inicializarSelectores();
+            cargarTablaNegocios(negocios);
+        } catch (error) {
+            console.error('Error al cargar datos desde el servidor:', error);
+            // Reemplazo de alert()
+            showTemporaryMessage('No se pudo conectar con el servidor o la base de datos. Se cargará una vista vacía.', 'error');
+        }
+    }
+
+    // Funciones de inicialización
+    function inicializarSelectores() {
+        const selectPais = document.getElementById('pais');
+        const selectModalPais = document.getElementById('modal-pais');
+        const selectRubro = document.getElementById('rubro');
+        const selectModalRubro = document.getElementById('modal-rubro');
+
+        // Limpiar selectores antes de cargar
+        selectPais.innerHTML = '<option value="">Seleccionar país</option>';
+        selectModalPais.innerHTML = '<option value="">Seleccionar país</option>';
+        selectRubro.innerHTML = '<option value="">Seleccionar rubro</option>';
+        selectModalRubro.innerHTML = '<option value="">Seleccionar rubro</option>';
+
+        datos.paises.forEach(pais => {
+            selectPais.innerHTML += `<option value="${pais.id}">${pais.nombre}</option>`;
+            selectModalPais.innerHTML += `<option value="${pais.id}">${pais.nombre}</option>`;
+        });
+
+        // Cargar rubros (asumiendo que vienen en datos.rubros)
+        if (datos.rubros) {
+            datos.rubros.forEach(rubro => {
+                selectRubro.innerHTML += `<option value="${rubro.id}">${rubro.nombre}</option>`;
+                selectModalRubro.innerHTML += `<option value="${rubro.id}">${rubro.nombre}</option>`;
+            });
+        }
+
+        // Cargar Argentina por defecto en ambos selectores (si existe)
+        if (datos.paises.some(p => p.id === 'argentina')) {
+             document.getElementById('pais').value = 'argentina';
+             document.getElementById('modal-pais').value = 'argentina';
+             cargarProvincias('argentina');
+             cargarProvinciasModal('argentina');
+        } else {
+             cargarProvincias('');
+             cargarProvinciasModal('');
+        }
+       
+        cargarCiudades('');
+    }
+
+    function cargarProvincias(paisId) {
+        const selectProvincia = document.getElementById('provincia');
+        selectProvincia.innerHTML = '<option value="">Seleccionar provincia</option>';
+
+        const pais = datos.paises.find(p => p.id === paisId);
+        if (pais) {
+            // Ordenar provincias por nombre alfabéticamente
+            const provinciasOrdenadas = [...pais.provincias].sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+            provinciasOrdenadas.forEach(provincia => {
+                selectProvincia.innerHTML += `<option value="${provincia.id}">${provincia.nombre}</option>`;
+            });
+        }
+
+        // Resetear selector de ciudades
+        document.getElementById('ciudad').innerHTML = '<option value="">Seleccionar ciudad</option>';
+    }
+
+    function cargarCiudades(provinciaId) {
+        const selectCiudad = document.getElementById('ciudad');
+        selectCiudad.innerHTML = '<option value="">Seleccionar ciudad</option>';
+
+        if (!provinciaId) {
+            return;
+        }
+
+        const paisId = document.getElementById('pais').value;
+        const paisSeleccionado = datos.paises.find(p => p.id === paisId); 
+
+        if (paisSeleccionado) {
+            const provincia = paisSeleccionado.provincias.find(p => p.id === provinciaId);
+            if (provincia) {
+                // Ordenar ciudades por nombre alfabéticamente
+                const ciudadesOrdenadas = [...provincia.ciudades].sort((a, b) => a.nombre.localeCompare(b.nombre));
+                ciudadesOrdenadas.forEach(ciudad => {
+                    selectCiudad.innerHTML += `<option value="${ciudad.id}">${ciudad.nombre}</option>`;
+                });
+            }
+        }
+    }
+
+    // Funciones para cargar las provincias en el modal
+    function cargarProvinciasModal(paisId) {
+        const selectProvinciaModal = document.getElementById('modal-provincia');
+        selectProvinciaModal.innerHTML = '<option value="">Seleccionar provincia</option>';
+        
+        if (!paisId) {
+            return;
+        }
+
+        const pais = datos.paises.find(p => p.id === paisId);
+        if (pais) {
+            const provinciasOrdenadas = [...pais.provincias].sort((a, b) => a.nombre.localeCompare(b.nombre));
+            provinciasOrdenadas.forEach(provincia => {
+                selectProvinciaModal.innerHTML += `<option value="${provincia.id}">${provincia.nombre}</option>`;
+            });
+        }
+
+        document.getElementById('modal-ciudad').innerHTML = '<option value="">Seleccionar ciudad</option>';
+    }
+
+    // Funciones para cargar las ciudades en el modal
+    function cargarCiudadesModal(provinciaId) {
+        const selectCiudadModal = document.getElementById('modal-ciudad');
+        selectCiudadModal.innerHTML = '<option value="">Seleccionar ciudad</option>';
+
+        if (!provinciaId) {
+            return;
+        }
+        
+        const paisId = document.getElementById('modal-pais').value; 
+        const paisSeleccionado = datos.paises.find(p => p.id === paisId);
+
+        if (paisSeleccionado) {
+            const provincia = paisSeleccionado.provincias.find(p => p.id === provinciaId);
+            if (provincia) {
+                const ciudadesOrdenadas = [...provincia.ciudades].sort((a, b) => a.nombre.localeCompare(b.nombre));
+                ciudadesOrdenadas.forEach(ciudad => {
+                    selectCiudadModal.innerHTML += `<option value="${ciudad.id}">${ciudad.nombre}</option>`;
+                });
+            }
+        }
+    }
+
+    // Funciones para la tabla
+    function cargarTablaNegocios(listaNegocios) {
+        const tbody = document.querySelector('#tabla-negocios tbody');
+        tbody.innerHTML = '';
+
+        if (listaNegocios.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="10" style="text-align: center;">No hay negocios registrados</td></tr>';
+            return;
+        }
+
+        listaNegocios.forEach(negocio => {
+            const pais = datos.paises.find(p => p.id === negocio.pais_id);
+            let provincia = null;
+            let ciudad = null;
+
+            if (pais) {
+                provincia = pais.provincias.find(p => p.id === negocio.provincia_id);
+                if (provincia) {
+                    ciudad = provincia.ciudades.find(c => c.id === negocio.ciudad_id);
+                }
+            }
+            
+            // Buscar el nombre del rubro
+            const rubroObj = datos.rubros.find(r => r.id === negocio.rubro_id);
+            const rubroNombre = rubroObj ? rubroObj.nombre : capitalizeFirstLetter(negocio.rubro_id || 'N/A');
+
+            // Formato para la fecha
+            const ultimaFecha = negocio.ultima_fecha_contacto 
+                ? new Date(negocio.ultima_fecha_contacto).toLocaleDateString('es-AR')
+                : 'Nunca';
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${negocio.nombre}</td>
+                <td>
+                    <a href="https://wa.me/${negocio.telefono.replace(/[\s-]/g, '')}" class="no-link-style" target="_blank" rel="noopener noreferrer">
+                        ${negocio.telefono}
+                    </a>
+                </td>
+                <td class="hidden md:table-cell">${rubroNombre}</td>
+                <td class="hidden md:table-cell">${ciudad ? ciudad.nombre : 'N/A'}</td>
+                <td class="hidden lg:table-cell">${provincia ? provincia.nombre : 'N/A'}</td>
+                <td class="hidden lg:table-cell">${pais ? pais.nombre : 'N/A'}</td> 
+                
+                <td class="text-center">${negocio.recontacto_contador || 0}</td> 
+                <td class="hidden sm:table-cell">${ultimaFecha}</td> 
+                <td class="status-cell">
+                    <button class="status-btn" data-id="${negocio.id}">
+                        <i class="fas fa-check" style="color: ${negocio.enviado ? 'green' : '#ccc'};"></i>
+                    </button>
+                </td>
+                <td class="actions">
+                    <button class="action-btn contact-btn" data-id="${negocio.id}" title="Registrar Recontacto">
+                        <i class="fas fa-phone-alt"></i> 
+                    </button>
+                    <button class="action-btn edit-btn" data-id="${negocio.id}"><i class="fas fa-edit"></i></button>
+                    <button class="action-btn delete-btn" data-id="${negocio.id}"><i class="fas fa-trash"></i></button>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+        });
+
+        // Agregar event listeners a los botones de acción
+        document.querySelectorAll('.edit-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                editarNegocio(btn.dataset.id);
+            });
+        });
+
+        // **CORREGIDO:** Usamos la función envolvente que lanza el modal
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                confirmarEliminarNegocio(btn.dataset.id);
+            });
+        });
+
+        document.querySelectorAll('.status-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                toggleStatus(btn.dataset.id);
+            });
+        });
+        
+        document.querySelectorAll('.contact-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                abrirModalContacto(btn.dataset.id);
+            });
+        });
+
+        actualizarEstadisticas();
+    }
+
+
+    async function toggleStatus(id) {
+        const negocio = negocios.find(n => n.id == id);
+        if (negocio) {
+            // Clonar el negocio para enviarlo actualizado
+            const negocioActualizado = { ...negocio, enviado: !negocio.enviado };
+            
+            try {
+                const response = await fetch(`${backendUrl}/api/negocios`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    // Aseguramos que se envían los IDs correctos al servidor
+                    body: JSON.stringify(negocioActualizado) 
+                });
+                if (!response.ok) {
+                    throw new Error('Error al actualizar el estado');
+                }
+                await fetchDataAndInitialize(); // Recargar datos después de la actualización
+            } catch (error) {
+                console.error('Error al actualizar el estado:', error);
+                showTemporaryMessage('Error al actualizar el estado. Inténtalo de nuevo.', 'error');
+            }
+        }
+    }
+
+
+    function filtrarNegocios() {
+        const pais = document.getElementById('pais').value;
+        const provincia = document.getElementById('provincia').value;
+        const ciudad = document.getElementById('ciudad').value;
+        const rubro = document.getElementById('rubro').value;
+        const busqueda = document.getElementById('busqueda').value.toLowerCase();
+
+        const negociosFiltrados = negocios.filter(n => {
+            const matchPais = pais ? n.pais_id === pais : true;
+            const matchProvincia = provincia ? n.provincia_id === provincia : true;
+            const matchCiudad = ciudad ? n.ciudad_id === ciudad : true;
+            const matchRubro = rubro ? n.rubro_id === rubro : true;
+            const matchBusqueda = n.nombre.toLowerCase().includes(busqueda);
+            
+            return matchPais && matchProvincia && matchCiudad && matchRubro && matchBusqueda;
+        });
+
+        cargarTablaNegocios(negociosFiltrados);
+    }
+
+
+    function ordenarTabla(column) {
+        const tbody = document.querySelector('#tabla-negocios tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+
+        let direction = 'asc';
+        if (currentSort.column === column) {
+            direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        }
+
+        const sortedRows = rows.sort((a, b) => {
+            const aValue = a.querySelector(`td:nth-child(${getColumnIndex(column)})`).textContent;
+            const bValue = b.querySelector(`td:nth-child(${getColumnIndex(column)})`).textContent;
+            
+            // Manejo de valores numéricos (para Recontactos)
+            if (column === 'recontactos') {
+                const aNum = parseInt(aValue) || 0;
+                const bNum = parseInt(bValue) || 0;
+                return direction === 'asc' ? aNum - bNum : bNum - aNum;
+            }
+
+            // Manejo de fechas (para Último Contacto)
+            if (column === 'contacto') {
+                const aDate = aValue === 'Nunca' ? new Date(0) : new Date(aValue);
+                const bDate = bValue === 'Nunca' ? new Date(0) : new Date(bValue);
+                return direction === 'asc' ? aDate - bDate : bDate - aDate;
+            }
+
+            // Manejo de texto
+            if (direction === 'asc') {
+                return aValue.localeCompare(bValue);
+            } else {
+                return bValue.localeCompare(aValue);
+            }
+        });
+
+        tbody.innerHTML = '';
+        sortedRows.forEach(row => tbody.appendChild(row));
+
+        currentSort = { column, direction };
+    }
+
+
+    function getColumnIndex(column) {
+        // Mapeo de columnas a índices (ajustados a la tabla actual)
+        const headers = {
+            'nombre': 1,
+            'telefono': 2,
+            'rubro': 3,
+            'ciudad': 4,
+            'provincia': 5,
+            'pais': 6,
+            'recontactos': 7,
+            'contacto': 8
+        };
+        return headers[column] || 1;
+    }
+
+    // Funciones para el modal de Negocios
+    function abrirModal() {
+        document.getElementById('modal-title').textContent = 'Agregar Nuevo Negocio';
+        document.getElementById('business-form').reset();
+        document.getElementById('business-id').value = '';
+        
+        // Cargar Argentina por defecto
+        if (datos.paises.some(p => p.id === 'argentina')) {
+            document.getElementById('modal-pais').value = 'argentina';
+            cargarProvinciasModal('argentina');
+        } else {
+            document.getElementById('modal-pais').value = '';
+            cargarProvinciasModal('');
+        }
+
+        document.getElementById('business-modal').style.display = 'flex';
+    }
+
+    function cerrarModal() {
+        document.getElementById('business-modal').style.display = 'none';
+    }
+
+    function editarNegocio(id) {
+        const negocio = negocios.find(n => n.id == id);
+        if (!negocio) return;
+
+        document.getElementById('modal-title').textContent = 'Editar Negocio';
+        document.getElementById('business-id').value = negocio.id;
+        document.getElementById('modal-nombre').value = negocio.nombre;
+        document.getElementById('modal-telefono').value = negocio.telefono;
+        document.getElementById('modal-rubro').value = negocio.rubro_id || ''; // Usar '' si es null
+        document.getElementById('modal-pais').value = negocio.pais_id || '';
+
+        // Aseguramos que los selectores se carguen en el orden correcto
+        cargarProvinciasModal(negocio.pais_id || '');
+        
+        // Usamos una pequeña pausa para asegurar que el DOM se actualice antes de seleccionar el valor
+        setTimeout(() => {
+            document.getElementById('modal-provincia').value = negocio.provincia_id || '';
+            cargarCiudadesModal(negocio.provincia_id || '');
+            
+            setTimeout(() => {
+                document.getElementById('modal-ciudad').value = negocio.ciudad_id || '';
+            }, 50); // Pequeño retraso
+        }, 50);
+
+        document.getElementById('business-modal').style.display = 'flex';
+    }
+
+
+    async function guardarNegocio(e) {
+        e.preventDefault();
+
+        const id = document.getElementById('business-id').value;
+        // Obtenemos los valores. Si no hay selección, serán "" (cadena vacía)
+        const pais_id = document.getElementById('modal-pais').value;
+        const provincia_id = document.getElementById('modal-provincia').value;
+        const ciudad_id = document.getElementById('modal-ciudad').value;
+        const rubro_id = document.getElementById('modal-rubro').value;
+        const nombre = document.getElementById('modal-nombre').value;
+        const telefono = document.getElementById('modal-telefono').value;
+
+        const negocioData = {
+            nombre,
+            telefono,
+            rubro_id,
+            pais_id,
+            provincia_id,
+            ciudad_id
+        };
+
+        if (id) {
+            // Edición
+            negocioData.id = parseInt(id);
+            const negocioExistente = negocios.find(n => n.id == id);
+            negocioData.enviado = negocioExistente ? negocioExistente.enviado : false;
+        } else {
+            // Nuevo negocio
+            negocioData.enviado = false;
+        }
+
+        try {
+            const method = id ? 'PUT' : 'POST';
+            const url = `${backendUrl}/api/negocios`;
+
+            const response = await fetch(url, {
+                method: method, 
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(negocioData)
+            });
+            
+            if (!response.ok) {
+                // Leer el error del servidor para mostrar el detalle
+                const errorData = await response.json();
+                throw new Error(errorData.details || 'Error desconocido al guardar.');
+            }
+
+            const data = await response.json();
+            console.log(data.message);
+            showTemporaryMessage(id ? 'Negocio actualizado con éxito.' : 'Negocio agregado con éxito.', 'success');
+            await fetchDataAndInitialize(); 
+            cerrarModal();
+        } catch (error) {
+            console.error('Error al guardar el negocio:', error);
+            showTemporaryMessage(`Hubo un error al guardar. Detalle: ${error.message}`, 'error');
+        }
+    }
+    
+    // Función envolvente que lanza el modal de confirmación
+    function confirmarEliminarNegocio(id) {
+        negocioToDelete = id;
+        document.getElementById('delete-confirm-modal').style.display = 'flex';
+    }
+
+    // Función real de eliminación (se llama después de la confirmación del modal)
+    async function _eliminarNegocio(id) {
+        try {
+            const response = await fetch(`${backendUrl}/api/negocios/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al eliminar el negocio');
+            }
+
+            const data = await response.json();
+            console.log(data.message);
+            showTemporaryMessage('Negocio eliminado con éxito.', 'success');
+            await fetchDataAndInitialize(); 
+        } catch (error) {
+            console.error('Error al eliminar el negocio:', error);
+            showTemporaryMessage('Hubo un error al eliminar el negocio. Inténtalo de nuevo.', 'error');
+        }
+    }
+
+
+    // *****************************************************************
+    // Funciones de Soporte para el Modal de Contacto (Historial y Registro)
+    // *****************************************************************
+
+    async function fetchHistorial(contactoId) {
+        try {
+            const response = await fetch(`${backendUrl}/api/negocios/historial/${contactoId}`);
+            if (!response.ok) {
+                if (response.status === 404 || response.status === 204) {
+                    return [];
+                }
+                throw new Error('Error al obtener el historial');
+            }
+            const data = await response.json();
+            return data.historial || [];
+        } catch (error) {
+            console.error('Error al cargar historial:', error);
+            return [];
+        }
+    }
+
+    async function abrirModalContacto(id) {
+        const negocio = negocios.find(n => n.id == id);
+        if (!negocio) return;
+
+        // 1. Configurar datos básicos
+        document.getElementById('contact-business-id').value = id;
+        document.getElementById('contact-business-name').textContent = negocio.nombre;
+        document.getElementById('register-contact-form').reset(); // Limpiar formulario
+        document.getElementById('contact-medio').value = ''; // Asegurar que el select se resetea
+        document.getElementById('contact-notas').value = '';
+
+        // 2. Obtener y mostrar el historial
+        const historyList = document.getElementById('contact-history-list');
+        historyList.innerHTML = '<li>Cargando historial...</li>';
+        
+        const historial = await fetchHistorial(id); 
+
+        historyList.innerHTML = '';
+        if (historial.length === 0) {
+            historyList.innerHTML = '<li class="text-center italic text-gray-500">No hay interacciones registradas.</li>';
+        } else {
+            historial.forEach(item => {
+                const fecha = new Date(item.fecha_interaccion).toLocaleDateString('es-AR', { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+                historyList.innerHTML += `
+                    <li>
+                        <strong>${fecha} (${item.medio}):</strong> ${item.notas}
+                    </li>`;
+            });
+        }
+
+        // 3. Abrir modal
+        document.getElementById('contact-modal').style.display = 'flex';
+    }
+
+    async function guardarNuevoContacto(e) {
+        e.preventDefault();
+
+        const id = document.getElementById('contact-business-id').value;
+        const medio = document.getElementById('contact-medio').value;
+        const notas = document.getElementById('contact-notas').value;
+
+        if (!medio || !notas) {
+            showTemporaryMessage('Por favor, selecciona un medio e ingresa una nota.', 'warning');
+            return;
+        }
+
+        const negocioData = {
+            id: parseInt(id),
+            medio: medio,
+            notas: notas
+        };
+
+        try {
+            const url = `${backendUrl}/api/negocios/registrar-contacto`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(negocioData)
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json(); 
+                throw new Error(errorData.details || response.statusText);
+            }
+
+            // Éxito:
+            document.getElementById('contact-modal').style.display = 'none'; // Cerrar modal
+            showTemporaryMessage('¡Recontacto registrado con éxito!', 'success');
+            await fetchDataAndInitialize(); // Recargar datos de la tabla principal
+            
+        } catch (error) {
+            console.error('Error al registrar el recontacto:', error);
+            showTemporaryMessage(`Hubo un error al registrar contacto. Detalle: ${error.message}`, 'error');
+        }
+    }
+
+    // Utilidades
+    function capitalizeFirstLetter(string) {
+        if (!string) return '';
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    
+    // Reemplazo no bloqueante para alert()
+    function showTemporaryMessage(message, type = 'info') {
+        let container = document.getElementById('temp-message-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'temp-message-container';
+            container.style.cssText = 'position: fixed; top: 10px; right: 10px; z-index: 2000; max-width: 90%;';
+            document.body.appendChild(container);
+        }
+
+        const alertDiv = document.createElement('div');
+        let bgColor, textColor;
+        if (type === 'success') {
+            bgColor = 'bg-green-500';
+            textColor = 'text-white';
+        } else if (type === 'error') {
+            bgColor = 'bg-red-500';
+            textColor = 'text-white';
+        } else if (type === 'warning') {
+            bgColor = 'bg-yellow-500';
+            textColor = 'text-gray-900';
+        } else {
+            bgColor = 'bg-blue-500';
+            textColor = 'text-white';
+        }
+
+        alertDiv.className = `${bgColor} ${textColor} p-4 rounded-lg shadow-xl mb-3 transition-opacity duration-300 opacity-0`;
+        alertDiv.textContent = message;
+        container.appendChild(alertDiv);
+
+        // Animación de entrada
+        setTimeout(() => alertDiv.style.opacity = '1', 10);
+        
+        // Animación de salida y remoción
+        setTimeout(() => {
+            alertDiv.style.opacity = '0';
+            setTimeout(() => alertDiv.remove(), 300);
+        }, 5000);
+    }
+
+    function actualizarEstadisticas() {
+        // Filtramos por IDs no nulos o vacíos para contar correctamente
+        const paisesUnicos = new Set(negocios.map(n => n.pais_id).filter(id => id));
+        document.getElementById('total-paises').textContent = paisesUnicos.size;
+
+        const provinciasUnicas = new Set(negocios.map(n => n.provincia_id).filter(id => id));
+        document.getElementById('total-provincias').textContent = provinciasUnicas.size;
+
+        const ciudadesUnicas = new Set(negocios.map(n => n.ciudad_id).filter(id => id));
+        document.getElementById('total-ciudades').textContent = ciudadesUnicas.size;
+
+        document.getElementById('total-negocios').textContent = negocios.length;
+    }
+</script>
 </body>
 </html>
