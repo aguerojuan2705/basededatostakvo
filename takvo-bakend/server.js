@@ -274,12 +274,12 @@ app.get('/api/negocios/historial/:id', async (req, res) => {
 // Define la ruta a la carpeta 'public' donde se encuentra el index.html, CSS y JS
 const staticFilesPath = path.join(__dirname, 'public');
 
-// Middleware para servir archivos estáticos
+// Middleware para servir archivos estáticos (debe ir ANTES del catch-all)
 app.use(express.static(staticFilesPath));
 
-// Ruta Catch-All (CORREGIDA): Sirve el index.html para cualquier otra solicitud que no sea API.
-// El uso de '/*' evita el error del path-to-regexp que ocurría con '*'
-app.get('/*', (req, res) => { 
+// Ruta Catch-All (SOLUCIÓN FINAL): Sirve el index.html para CUALQUIER otra solicitud.
+// Usamos app.use() sin una ruta específica para evitar el problema del path-to-regexp.
+app.use((req, res) => { 
     // Asegura que se envíe el index.html de la carpeta 'public'
     const indexPath = path.join(staticFilesPath, 'index.html');
     res.sendFile(indexPath, (err) => {
