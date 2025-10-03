@@ -35,26 +35,23 @@ client.connect()
 // API 1: Obtener todos los datos
 app.get('/api/datos', async (req, res) => {
   try {
-    // Query mejorada: Listamos explícitamente todas las columnas,
-    // incluyendo los nuevos campos 'email' e 'instagram'
     const negociosQuery = `
-        SELECT 
-            id, 
-            nombre, 
-            telefono, 
-            rubro_id, 
-            enviado, 
-            pais_id, 
-            provincia_id, 
-            ciudad_id, 
-            recontacto_contador, 
-            ultima_fecha_contacto,
-            email,          
-            instagram       
-        FROM negocios
-    `;
-    const negociosResult = await client.query(negociosQuery);
-
+        SELECT 
+            id, 
+            nombre, 
+            telefono, 
+            rubro_id, 
+            enviado, 
+            pais_id, 
+            provincia_id, 
+            ciudad_id, 
+            recontacto_contador, 
+            ultima_fecha_contacto,
+            email,          
+            instagram       
+        FROM negocios
+    `;
+    const negociosResult = await client.query(negociosQuery);
     
     const paisesResult = await client.query('SELECT * FROM paises');
     const provinciasResult = await client.query('SELECT * FROM provincias');
