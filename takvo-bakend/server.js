@@ -34,33 +34,53 @@ client.connect()
 
 // API 1: Obtener todos los datos
 app.get('/api/datos', async (req, res) => {
-  try {
-    const negociosResult = await client.query('SELECT * FROM negocios');
-    const paisesResult = await client.query('SELECT * FROM paises');
-    const provinciasResult = await client.query('SELECT * FROM provincias');
-    const ciudadesResult = await client.query('SELECT * FROM ciudades');
-    const rubrosResult = await client.query('SELECT * FROM rubros');
+  try {
+    // Query mejorada: Listamos explícitamente todas las columnas,
+    // incluyendo los nuevos campos 'email' e 'instagram'
+    const negociosQuery = `
+        SELECT 
+            id, 
+            nombre, 
+            telefono, 
+            rubro_id, 
+            enviado, 
+            pais_id, 
+            provincia_id, 
+            ciudad_id, 
+            recontacto_contador, 
+            ultima_fecha_contacto,
+            email,          
+            instagram       
+        FROM negocios
+    `;
+    const negociosResult = await client.query(negociosQuery);
 
-    // Estructurar los datos para el frontend
-    const paises = paisesResult.rows.map(p => ({
-      ...p,
-      provincias: provinciasResult.rows.filter(prov => prov.pais_id === p.id).map(prov => ({
-        ...prov,
-        ciudades: ciudadesResult.rows.filter(c => c.provincia_id === prov.id)
-      }))
-    }));
+    
+    const paisesResult = await client.query('SELECT * FROM paises');
+    const provinciasResult = await client.query('SELECT * FROM provincias');
+    const ciudadesResult = await client.query('SELECT * FROM ciudades');
+    const rubrosResult = await client.query('SELECT * FROM rubros');
 
-    const rubros = rubrosResult.rows;
+    // Estructurar los datos para el frontend
+    const paises = paisesResult.rows.map(p => ({
+      ...p,
+      provincias: provinciasResult.rows.filter(prov => prov.pais_id === p.id).map(prov => ({
+        ...prov,
+        ciudades: ciudadesResult.rows.filter(c => c.provincia_id === prov.id)
+      }))
+    }));
 
-    res.json({
-      negocios: negociosResult.rows,
-      paises,
-      rubros
-    });
-  } catch (error) {
-    console.error('Error al obtener datos de la base de datos:', error);
-    res.status(500).json({ error: 'Error del servidor' });
-  }
+    const rubros = rubrosResult.rows;
+
+    res.json({
+      negocios: negociosResult.rows,
+      paises,
+      rubros
+    });
+  } catch (error) {
+    console.error('Error al obtener datos de la base de datos:', error);
+    res.status(500).json({ error: 'Error del servidor' });
+  }
 });
 
 // API 2: Actualizar o crear un negocio

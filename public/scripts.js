@@ -227,7 +227,13 @@ function cargarTablaNegocios(listaNegocios) {
         const tr = document.createElement('tr');
         // NOTA: EL ORDEN DE LAS COLUMNAS AQUÍ DEBE COINCIDIR CON EL <thead> EN TU HTML (9 columnas)
         tr.innerHTML = `
-            <td>${negocio.nombre}</td>
+            <td>
+                <span style="font-weight: 600;">${negocio.nombre}</span>
+                <div class="social-links">
+                    ${negocio.email ? `<a href="mailto:${negocio.email}" target="_blank" title="Enviar Email"><i class="fas fa-envelope social-icon email-icon"></i></a>` : ''}
+                    ${negocio.instagram ? `<a href="https://www.instagram.com/${negocio.instagram.replace('@', '')}" target="_blank" title="Ver Instagram"><i class="fab fa-instagram social-icon instagram-icon"></i></a>` : ''}
+                </div>
+            </td>
             <td>
                 <a href="https://wa.me/${negocio.telefono.replace(/[\s-]/g, '')}" class="no-link-style" target="_blank" rel="noopener noreferrer">
                     ${negocio.telefono}
@@ -334,12 +340,14 @@ function filtrarNegocios() {
 function ordenarTabla(column) {
     const tbody = document.querySelector('#tabla-negocios tbody');
     const rows = Array.from(tbody.querySelectorAll('tr'));
-
+    
+    // 1. Determinar dirección
     let direction = 'asc';
     if (currentSort.column === column) {
         direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
     }
 
+    // ... [Tu lógica de ordenamiento (rows.sort)] ...
     const sortedRows = rows.sort((a, b) => {
         const aValue = a.querySelector(`td:nth-child(${getColumnIndex(column)})`).textContent;
         const bValue = b.querySelector(`td:nth-child(${getColumnIndex(column)})`).textContent;
@@ -350,7 +358,20 @@ function ordenarTabla(column) {
             return bValue.localeCompare(aValue);
         }
     });
+    // ...
 
+    // 2. Limpiar clases de ordenamiento
+    document.querySelectorAll('.sortable').forEach(header => {
+        header.classList.remove('sort-asc', 'sort-desc');
+    });
+
+    // 3. Aplicar nueva clase al encabezado activo
+    const activeHeader = document.querySelector(`[data-sort="${column}"]`);
+    if (activeHeader) {
+        activeHeader.classList.add(direction === 'asc' ? 'sort-asc' : 'sort-desc');
+    }
+
+    // 4. Renderizar filas ordenadas
     tbody.innerHTML = '';
     sortedRows.forEach(row => tbody.appendChild(row));
 
