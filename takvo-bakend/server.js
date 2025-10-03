@@ -56,8 +56,6 @@ app.get('/api/datos', async (req, res) => {
         const { rows: negocios } = await pool.query(negociosQuery);
 
         // Consulta 2 y 3: Estructura geográfica y Rubros
-        // Nota: Mantenemos la lógica de estructuración de países/provincias/ciudades aquí
-        // para asegurar que el frontend solo reciba un JSON listo para usar.
         const paisesQuery = `
             SELECT id, nombre FROM paises;
             SELECT p.id, p.nombre, p.pais_id, p.poblacion FROM provincias p;
@@ -69,7 +67,7 @@ app.get('/api/datos', async (req, res) => {
         const provinciasData = results[1].rows;
         const ciudadesData = results[2].rows;
 
-        // Estructurar los datos geográficos jerárquicamente (Ciudades anidadas en Provincias, Provincias anidadas en Países)
+        // Estructurar los datos geográficos jerárquicamente
         const estructurados = paisesData.map(pais => {
             pais.provincias = provinciasData
                 .filter(p => p.pais_id === pais.id)
@@ -258,7 +256,6 @@ app.get('/api/negocios/historial/:id', async (req, res) => {
         const { rows: historial } = await pool.query(query, [id]);
         
         if (historial.length === 0) {
-            // Devuelve 204 No Content si no hay historial para que el frontend lo maneje
             return res.status(204).json({ message: 'No hay historial para este negocio.' });
         }
 
@@ -277,11 +274,12 @@ app.get('/api/negocios/historial/:id', async (req, res) => {
 // Define la ruta a la carpeta 'public' donde se encuentra el index.html, CSS y JS
 const staticFilesPath = path.join(__dirname, 'public');
 
-// Middleware para servir archivos estáticos (debe ir antes del catch-all)
+// Middleware para servir archivos estáticos
 app.use(express.static(staticFilesPath));
 
-// Ruta Catch-All: Sirve el index.html para cualquier otra solicitud que no sea API.
-app.get('*', (req, res) => {
+// Ruta Catch-All (CORREGIDA): Sirve el index.html para cualquier otra solicitud que no sea API.
+// El uso de '/*' evita el error del path-to-regexp que ocurría con '*'
+app.get('/*', (req, res) => { 
     // Asegura que se envíe el index.html de la carpeta 'public'
     const indexPath = path.join(staticFilesPath, 'index.html');
     res.sendFile(indexPath, (err) => {
