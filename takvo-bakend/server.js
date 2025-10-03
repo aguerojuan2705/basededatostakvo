@@ -140,41 +140,68 @@ app.delete('/api/negocios/:id', async (req, res) => {
 
 // API 4: Registrar un nuevo recontacto
 app.post('/api/negocios/registrar-contacto', async (req, res) => {
-    const { id, medio, notas } = req.body;
-    const now = new Date();
+    // Extrae los datos del cuerpo de la petición.
+    const { id, medio, notas } = req.body; 
 
+    // Validación básica para evitar errores 500 innecesarios
+    if (!id || !medio || !notas) {
+        return res.status(400).json({ error: 'Faltan datos requeridos (id del negocio, medio o notas).' });
+    }
+
+    let client;
     try {
-        // 1. Registrar la interacción en la tabla de historial
-        const historialQuery = `
-            INSERT INTO historial_contacto (negocio_id, fecha_interaccion, medio, notas)
-            VALUES ($1, $2, $3, $4)
+        // Asumiendo que tu cliente de conexión a DB se llama 'client' (como en el código completo que te envié)
+        // Si usas un pool de conexiones, reemplaza 'client' por 'pool.connect()' y 'client.release()'
+        
+        // --- COMIENZA LA TRANSACCIÓN ---
+        await client.query('BEGIN'); 
+
+        // 1. Insertar el registro en la tabla 'historial_interacciones' (Tu nombre de tabla)
+        const insertHistoryQuery = `
+            INSERT INTO historial_interacciones (negocio_id, fecha_interaccion, medio, notas)
+            VALUES ($1, NOW(), $2, $3)
             RETURNING *;
         `;
-        await client.query(historialQuery, [id, now, medio, notas]);
+        await client.query(insertHistoryQuery, [id, medio, notas]);
 
-        // 2. Actualizar el negocio principal
-        const updateNegocioQuery = `
+        // 2. Actualizar el negocio principal en la tabla 'negocios'
+        // Esto incrementa el contador y actualiza la fecha.
+        const updateBusinessQuery = `
             UPDATE negocios
-            SET recontacto_contador = recontacto_contador + 1, 
-                ultima_fecha_contacto = $1
-            WHERE id = $2
-            RETURNING *;
+            SET 
+                recontacto_contador = COALESCE(recontacto_contador, 0) + 1,
+                ultima_fecha_contacto = NOW() 
+            WHERE id = $1
+            RETURNING recontacto_contador, ultima_fecha_contacto;
         `;
-        const result = await client.query(updateNegocioQuery, [now, id]);
+        const updateResult = await client.query(updateBusinessQuery, [id]);
 
-        if (result.rowCount === 0) {
-            return res.status(404).json({ error: 'Negocio no encontrado.' });
+        if (updateResult.rowCount === 0) {
+             throw new Error("No se encontró el negocio para actualizar.");
         }
 
-        res.status(200).json({ 
-            message: 'Recontacto registrado con éxito', 
-            historial: result.rows[0]
+        await client.query('COMMIT'); // Confirmar que ambos pasos se realizaron
+
+        // Respuesta exitosa
+        res.json({ 
+            message: 'Recontacto registrado con éxito.', 
+            updatedNegocio: updateResult.rows[0] 
         });
 
     } catch (error) {
-        console.error('Error al registrar recontacto:', error);
-        res.status(500).json({ error: 'Error interno del servidor al registrar contacto' });
-    }
+        if (client) {
+            await client.query('ROLLBACK'); // Deshacer en caso de error
+        }
+        console.error('Error al registrar contacto en el servidor:', error);
+        
+        // Devolver un error específico para ayudarte a depurar si falla de nuevo
+        res.status(500).json({ 
+            error: 'Error al procesar la solicitud de recontacto.', 
+            details: error.message 
+        });
+    } 
+    // NOTA: Si usas 'pool.connect()', necesitas un bloque 'finally' para 'client.release()'. 
+    // Si usas el cliente único, como en el código completo, este bloque final no es necesario.
 });
 
 
